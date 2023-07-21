@@ -1,0 +1,23 @@
+
+
+GET http://localhost:3001/api/item
+
+
+###
+POST http://localhost:3001/api/item
+###
+PUT http://localhost:3001/api/item/64ba5bf10b864c2cd7021887
+Content-Type: application/json
+
+{   
+    "code": "v3",
+    "price": "2 tỷ - 3 tỷ",
+    "amenities": null,
+    "rooms": null
+}
+###
+GET http://localhost:3001/api/item/64b9f30683c26d331d90aab8
+Content-Type: application/json
+
+###
+DELETE http://localhost:3001/api/item/64ba5bf10b864c2cd7021887
