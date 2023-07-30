@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 // const { Schema } = mongoose;
 
-const { PostConnection } = require('../Helpers/connections_mongodb')
+const { Connection } = require('../Helpers/connections_mongodb')
 
 const realEstateSchema = new Schema({
     code: { type: String, required: true, unique: true },
@@ -22,4 +22,4 @@ const realEstateSchema = new Schema({
     images: [{ type: String }]
 })
 
-module.exports = PostConnection.model('Post', realEstateSchema);
+module.exports = Connection.model('Post', realEstateSchema);
