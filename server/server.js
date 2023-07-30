@@ -3,6 +3,7 @@ const express = require('express')
 const app = express()
 const createError = require('http-errors')
 const Post = require('./Routes/Post.route')
+const UserRouter = require('./Routes/User.route')
 require('./Helpers/connections_mongodb')
 require('dotenv').config()
 const PORT = process.env.PORT || 3001
@@ -13,7 +14,8 @@ app.get('/', (req, res, next) => {
 
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
-app.use('/api/item', Post)
+app.use('/api/item', Post);
+app.use('/api/user', UserRouter);
 app.use('/uploads', express.static("uploads"));
 
 app.use((req, res, next) => {

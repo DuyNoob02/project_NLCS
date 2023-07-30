@@ -21,3 +21,25 @@ Content-Type: application/json
 
 ###
 DELETE http://localhost:3001/api/item/64ba5bf10b864c2cd7021887
+
+###
+POST  http://localhost:3001/api/user/register
+Content-Type: application/json
+
+{
+    "fullName": "nguyenkhacduy",
+    "phoneNumber": "0778125400",
+    "password": "12345"
+}
+###
+POST http://localhost:3001/api/user/login
+Content-Type: application/json
+
+{
+    "phoneNumber": "0778125400",
+    "password": "12345"
+}
+
+###
+GET http://localhost:3001/api/user
+Content-Type: application/json
