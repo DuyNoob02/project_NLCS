@@ -26,8 +26,9 @@ function newConnection(uri) {
     return conn;
 }
 
-const PostConnection = newConnection(process.env.URI_MONGODB_ITEMS);
+const Connection = newConnection(process.env.URI_MONGODB_PROJECT);
+
 
 module.exports = {
-    PostConnection
+    Connection
 }
