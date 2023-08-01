@@ -6,7 +6,15 @@ const Post = require('./Routes/Post.route')
 const UserRouter = require('./Routes/User.route')
 require('./Helpers/connections_mongodb')
 require('dotenv').config()
+const client = require('./Helpers/connection_redis')
 const PORT = process.env.PORT || 3001
+
+client.set('foo', 'nguyenkhacduy');
+client.get('foo', (err, result)=>{
+    if(err) throw createError.BadRequest()
+    console.log(result);
+})
+
 
 app.get('/', (req, res, next) => {
     res.send('Home page');
