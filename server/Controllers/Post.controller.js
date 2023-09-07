@@ -1,6 +1,8 @@
 const createError = require('http-errors')
 const Post = require('../Models/Post.model')
 const fs = require('fs')
+const verifyAccessToken = require('../Helpers/jwt_service')
+
 
 module.exports = {
     getAllPost: async (req, res, next) => {
@@ -10,7 +12,7 @@ module.exports = {
                 throw createError.NotFound()
             }
             return res.json({
-                element: result
+                result
             })
         } catch (error) {
             next(error)
@@ -18,18 +20,29 @@ module.exports = {
     },
 
     createPost: async (req, res, next) => {
+
         try {
+
             //xu ly loi khong co file duoc chon
-            if (!req.file) {
+            if (!req.files) {
                 throw createError.BadRequest('No file uploaded');
             }
 
-            const { data, images } = req.body;
-            const jsonData = JSON.parse(data);
+            console.log(req.files);
+            const userID = req.payload.userID
+            // console.log(userID);
+            console.log(req.body);
+            const { code, formality, name, address, acreage, bedrooms, bathrooms, livingRooms,
+                amenities, price, type, description, pending } = req.body;
 
-            const { code, name, address, acreage, rooms, amenities, price, type, description } = jsonData;
-            const { bedrooms, bathrooms, livingRooms } = rooms;
-
+            console.log(price);
+            const numericValue = price.replace(/[^0-9]/g, '');
+            console.log(numericValue);
+            // const numericValue = parseFloat(price)
+            // const formattedPrice = numericValue.toLocaleString('vi-VN', {
+            //     style: 'currency',
+            //     currency: 'VND',
+            // });
             const isExists = await Post.findOne({
                 code
             })
@@ -41,20 +54,24 @@ module.exports = {
 
             // Xử lý nếu muốn thêm các trường khác trong yêu cầu POST.
             const newPost = new Post({
+                userID: userID,
                 code: code,
+                formality: formality,
                 name: name,
                 address: address,
                 acreage: acreage,
-                rooms: {
-                    bedrooms: bedrooms,
-                    bathrooms: bathrooms,
-                    livingRooms: livingRooms
-                },
+
+                bedrooms: bedrooms,
+                bathrooms: bathrooms,
+                livingRooms: livingRooms,
+
                 amenities: amenities,
-                price: price,
+                price: numericValue,
                 type: type,
                 description: description,
-                images: req.file.filename // Sử dụng req.file.filename để lấy tên file đã upload
+                images: req.files.map(file => file.path), // Sử dụng req.file.filename để lấy tên file đã upload
+                // images: images // Sử dụng req.file.filename để lấy tên file đã upload
+                pending: pending
             });
 
             const savedPost = await newPost.save();
@@ -70,11 +87,27 @@ module.exports = {
     },
 
     getPostByID: async (req, res, next) => {
-        const id = req.params.id
+        const { id } = req.params
+        // console.log(id);
         try {
-            const result = await Post.findById(id);
+            const result = await Post.findById({ _id: id });
             if (!result) {
-                throw createError.NotFound();
+                throw createError.NotFound('Khong tim thay');
+            }
+            res.send(result);
+        } catch (error) {
+            next(error)
+        }
+    },
+
+    getPostbyIdUser: async (req, res, next) => {
+        const { id } = req.params;
+        // console.log(req.params);
+        // console.log(id);
+        try {
+            const result = await Post.find({ userID: id });
+            if (!result) {
+                throw createError.NotFound('Khong co bai dang')
             }
             res.send(result);
         } catch (error) {
@@ -143,7 +176,7 @@ module.exports = {
                     next(error)
                 }
             }
-            res.send({
+            return res.status(200).json({
                 message: 'Post deleted successfully!'
             })
         } catch (error) {
