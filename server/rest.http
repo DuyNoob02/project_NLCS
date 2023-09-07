@@ -49,13 +49,13 @@ Content-Type: application/json
 }
 
 ###
-GET http://localhost:3001/api/user/getlist
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySUQiOnsidXNlcklEIjoiNjRjNWNmODIwZTM4MmMwNjExMDM2YmJmIiwiaWF0IjoxNjkwODU4MjEzLCJleHAiOjE2OTE0NjMwMTN9LCJpYXQiOjE2OTA4NTg0NDksImV4cCI6MTY5MDg1ODUwOX0.gg7XSOorWvB4008ErXj3P5eREJlYws5e84j0NXiMMTU
+GET http://localhost:3001/api/user/getInfoUser
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySUQiOiI2NGM1Y2Y4MjBlMzgyYzA2MTEwMzZiYmYiLCJpYXQiOjE2OTE4MDk5OTIsImV4cCI6MTY5MTgxMDI5Mn0.kD5nkF8HWKQo8fAedPovHTim3QN0-mlF-HKW1Z75yxU
 
 ###
 DELETE http://localhost:3001/api/user/logout
 Content-Type: application/json
 
 {
-    "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySUQiOiI2NGM1Y2Y4MjBlMzgyYzA2MTEwMzZiYmYiLCJpYXQiOjE2OTA4NTkzODcsImV4cCI6MTY5MTQ2NDE4N30.5WtFLC-Q9FbLrqrcy3V1oAwaSZDJk52TxpYhjavoC2Q"
+    "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySUQiOiI2NGM1Y2Y4MjBlMzgyYzA2MTEwMzZiYmYiLCJpYXQiOjE2OTE1NjExNDYsImV4cCI6MTY5MjE2NTk0Nn0.hgScGhR9KMgFExG745mTjyF9w_FuCPECubvvX-vIE3Y"
 }
