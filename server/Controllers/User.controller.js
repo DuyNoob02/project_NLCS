@@ -1,18 +1,24 @@
 const UserSchema = require('../Models/User.model')
 const createError = require('http-errors');
-const userValidate = require('../Helpers/validation');
+const { userValidate, userValidateLogin } = require('../Helpers/validation');
 const client = require('../Helpers/connection_redis')
-const { signAccessToken, signRefreshToken, verifyRefreshToken} = require('../Helpers/jwt_service')
+const { signAccessToken, signRefreshToken, verifyRefreshToken } = require('../Helpers/jwt_service')
+
+
+
 
 module.exports = {
     fetchAll: async (req, res, next) => {
         try {
-            const result = UserSchema.find();
+            const result = await UserSchema.find({
+                role: 'user'
+            });
+            // console.log(result);
             if (!result) {
                 createError.NotFound();
             }
             res.json({
-                element: result
+                result
             })
         } catch (error) {
             next(error)
@@ -22,12 +28,11 @@ module.exports = {
     register: async (req, res, next) => {
         console.log(req.body);
         try {
-            const { fullName, phoneNumber, password } = req.body;
+            const { fullName, phoneNumber, password, role, email } = req.body;
             const { error } = userValidate(req.body); //verify information
             if (error) {
                 throw createError(error.details[0].message);
             }
-            //account exists check
             const isExists = await UserSchema.findOne({
                 phoneNumber
             });
@@ -39,7 +44,9 @@ module.exports = {
             const user = new UserSchema({
                 fullName,
                 phoneNumber,
-                password
+                password,
+                role,
+                email
             })
 
             //save user into DB
@@ -50,13 +57,15 @@ module.exports = {
                 elements: savedUser
             })
         } catch (error) {
+            console.log(error);
             next(error)
         }
     },
 
     login: async (req, res, next) => {
         try {
-            const { error } = userValidate(req.body);
+
+            const { error } = userValidateLogin(req.body);
             if (error) {
                 throw createError(error.details[0].message);
             }
@@ -65,19 +74,43 @@ module.exports = {
             const user = await UserSchema.findOne({
                 phoneNumber
             })
+            console.log(user);
+            const fullName = user.fullName
+            const image = user.image
+            const userID = user._id
+            const role = user.role
             if (!user) {
                 throw createError.NotFound(`${phoneNumber} is not registerd`)
             }
 
+
             const isValid = await user.isCheckPassword(password)
             if (!isValid) {
-                throw createError.Unauthorized()
+                throw createError.Unauthorized('Khong xac thuc')
             }
             const accessToken = await signAccessToken(user._id);
             const refreshToken = await signRefreshToken(user._id);
-            res.json({
-                accessToken,
-                refreshToken
+            if (role == 'admin') {
+                return res.json({
+                    message: "admin", data: {
+                        role,
+                        accessToken,
+                        refreshToken,
+                        fullName,
+                        userID
+                    }
+                })
+            }
+            return res.json({
+                data: {
+                    accessToken,
+                    refreshToken,
+                    fullName,
+                    image,
+                    userID,
+                    role
+                }
+
             })
 
         } catch (error) {
@@ -85,11 +118,11 @@ module.exports = {
         }
     },
 
-    refreshToken: async(req, res, next)=>{
+    refreshToken: async (req, res, next) => {
         try {
             console.log(req.body);
-            const {refreshToken} = req.body;
-            if(!refreshToken) throw createError.BadRequest();
+            const { refreshToken } = req.body;
+            if (!refreshToken) throw createError.BadRequest();
             const userID = await verifyRefreshToken(refreshToken);
             const newAccessToken = await signAccessToken(userID);
             const newRefreshToken = await signRefreshToken(userID);
@@ -103,15 +136,52 @@ module.exports = {
         }
     },
 
+    update: async (req, res, next) => {
+        try {
+            const userID = req.params.id
+            // console.log(userID);
+            const user = await UserSchema.findOne({
+                _id: userID
+            })
+            if (!user) {
+                throw createError.NotFound('User not found')
+            }
+
+            const updatedEmail = req.body.email;
+            let emailExist = null;
+            if (updatedEmail !== user.email) {
+                const emailExist = await UserSchema.findOne({ email: updatedEmail });
+
+                if (emailExist) {
+                    throw createError.Conflict('Email already exists');
+                }
+            }
+
+            if (user && !emailExist) {
+                const updateInfo = {
+                    ...user._doc,
+                    ...req.body
+                }
+                // console.log(updateInfo);
+                await UserSchema.findByIdAndUpdate({ _id: userID }, updateInfo, { new: true })
+
+                return res.status(200).json({ message: 'oke', updateInfo });
+            }
+
+        } catch (error) {
+            next(error)
+        }
+    },
+
     logout: async (req, res, next) => {
         try {
-            const {refreshToken} = req.body;
-            if(!refreshToken){
+            const { refreshToken } = req.body;
+            if (!refreshToken) {
                 throw createError.BadRequest();
             }
-            const {userID} = await verifyRefreshToken(refreshToken);
-            client.del(userID.toString(), (err, reply)=>{
-                if(err){
+            const { userID } = await verifyRefreshToken(refreshToken);
+            client.del(userID.toString(), (err, reply) => {
+                if (err) {
                     throw createError.InternalServerError();
                 }
                 res.json({
@@ -122,15 +192,69 @@ module.exports = {
             next(error)
         }
     },
-    getListUser: (req, res, next) => {
-        console.log(req.headers);
-        const listUser = [
-            {
-                "email": "adb"
+    getInfoUser: async (req, res, next) => {
+        try {
+
+            // const userID = req.payload.userID;
+            const userID = req.params.id;
+            // console.log(userID);
+
+            const data = await UserSchema.findById(userID)
+            // console.log(req.payload);
+            res.json({
+                ...data
+            })
+        } catch (error) {
+            next(error)
+        }
+    },
+    updateAVT: async (req, res, next) => {
+        try {
+            const { id } = req.params;
+            const file = req.file.path;
+
+            // console.log(file);
+            if (!file) {
+                createError.BadRequest('No file uploaded')
             }
-        ]
-        res.json({
-            listUser
-        })
+            const user = await UserSchema.findById({ _id: id });
+            if (!user) {
+                console.log('User not found');
+            }
+            const newAVT = {
+                ...user._doc,
+                image: file
+            }
+
+            await UserSchema.findByIdAndUpdate({ _id: id }, newAVT, { new: true })
+            res.status(201).json({ message: 'ok', newAVT })
+
+        } catch (error) {
+            console.log(error);
+        }
+    },
+
+    deleteUser: async (req, res, next) => {
+        try {
+            const UserID = req.params.id;
+            console.log(UserID);
+            const user = await UserSchema.findById({
+                _id: UserID
+            })
+
+            if (!user) {
+                createError.NotFound()
+            }
+            await UserSchema.findByIdAndDelete(
+                UserID
+            )
+            return res.status(200).json({
+                message: "Delete successfully!",
+                status: 200
+            })
+        } catch (error) {
+            next(error)
+        }
     }
+
 }
