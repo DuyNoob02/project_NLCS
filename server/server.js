@@ -3,6 +3,7 @@ const express = require('express')
 const app = express()
 const createError = require('http-errors')
 const Post = require('./Routes/Post.route')
+const cors = require('cors')
 const UserRouter = require('./Routes/User.route')
 require('./Helpers/connections_mongodb')
 require('dotenv').config()
@@ -22,10 +23,11 @@ app.get('/', (req, res, next) => {
 
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
+app.use(cors())
 app.use('/api/item', Post);
 app.use('/api/user', UserRouter);
 app.use('/uploads', express.static("uploads"));
-
+app.options('*', cors())
 app.use((req, res, next) => {
     // const err =   new Error('Not Found');
     // err.status = 500;
