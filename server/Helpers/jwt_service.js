@@ -9,7 +9,7 @@ const signAccessToken = async (userID) => {
         }
         const secret = process.env.ACCESSTOKEN_SECRET_KEY
         const option = {
-            expiresIn: '1m'
+            expiresIn: '2h'
         }
         JWT.sign(payload, secret, option, (err, token) => {
             if (err) {
@@ -32,11 +32,12 @@ const verifyAccessToken = (req, res, next) => {
     JWT.verify(token, process.env.ACCESSTOKEN_SECRET_KEY, (err, payload) => {
         if (err) {
             if (err.name === 'JsonWebTokenError') {
-                return next(createError.Unauthorized())
+                return next(createError.Unauthorized(err.name))
             }
-            return next(createError.Unauthorized(err.message))
+            return next(createError.Unauthorized(err.message + 'Loi o day'))
         }
         req.payload = payload;
+        // req.userID = payload.userID;
         next();
     })
 }
