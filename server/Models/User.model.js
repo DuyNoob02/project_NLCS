@@ -15,7 +15,7 @@ const validatePhoneNumber = (value) => {
 const UserSchema = new Schema({
     fullName: {
         type: String,
-        lowercase: true
+        // lowercase: true
     },
     phoneNumber: {
         type: String,
@@ -26,12 +26,30 @@ const UserSchema = new Schema({
     password: {
         type: String,
         required: true,
+        // unique: true
+    },
+    email: {
+        type: String,
         unique: true
+    },
+    address: {
+        type: String
     },
     image: {
         type: String,
-        default: 'default-img.png'
-    }
+    },
+    role: {
+        type: String,
+        default: 'user'
+    },
+    // otpSecret: {
+    //     type: String, // Lưu trữ secret key OTP của người dùng
+    //     unique: true, // Đảm bảo rằng mỗi người dùng chỉ có một secret key
+    // },
+    // isOtpVerified: {
+    //     type: Boolean,
+    //     default: false, // Ban đầu, đánh dấu người dùng chưa xác thực OTP
+    // }
 })
 
 
