@@ -28,16 +28,16 @@ module.exports = {
                 throw createError.BadRequest('No file uploaded');
             }
 
-            console.log(req.files);
+            // console.log(req.files);
             const userID = req.payload.userID
             // console.log(userID);
-            console.log(req.body);
+            // console.log(req.body);
             const { code, formality, name, address, acreage, bedrooms, bathrooms, livingRooms,
-                amenities, price, type, description, pending } = req.body;
+                amenities, price, type, description, pending, createAt } = req.body;
 
-            console.log(price);
+            // console.log(price);
             const numericValue = price.replace(/[^0-9]/g, '');
-            console.log(numericValue);
+            // console.log(numericValue);
             // const numericValue = parseFloat(price)
             // const formattedPrice = numericValue.toLocaleString('vi-VN', {
             //     style: 'currency',
@@ -71,7 +71,8 @@ module.exports = {
                 description: description,
                 images: req.files.map(file => file.path), // Sử dụng req.file.filename để lấy tên file đã upload
                 // images: images // Sử dụng req.file.filename để lấy tên file đã upload
-                pending: pending
+                pending: pending,
+                createAt: createAt
             });
 
             const savedPost = await newPost.save();
@@ -124,22 +125,22 @@ module.exports = {
                 throw createError.NotFound('Post not found.')
             }
 
-            if (req.file) {
-                // Kiểm tra đường dẫn hình ảnh cũ
-                const old_img_path = './uploads/' + req.file.filename;
-                if (postToUpdate.images) {
-                    try {
-                        fs.unlinkSync(old_img_path);
-                    } catch (error) {
-                        console.error('Error deleting old image:', error);
-                    }
-                }
-                // Cập nhật đường dẫn hình ảnh mới
-                new_img = req.file.filename;
-            }
-            else {
-                new_img = postToUpdate.images;
-            }
+            // if (req.file) {
+            //     // Kiểm tra đường dẫn hình ảnh cũ
+            //     const old_img_path = './uploads/' + req.file.filename;
+            //     if (postToUpdate.images) {
+            //         try {
+            //             fs.unlinkSync(old_img_path);
+            //         } catch (error) {
+            //             console.error('Error deleting old image:', error);
+            //         }
+            //     }
+            //     // Cập nhật đường dẫn hình ảnh mới
+            //     new_img = req.file.filename;
+            // }
+            // else {
+            //     new_img = postToUpdate.images;
+            // }
             const newPost = req.body;
             // console.log(newPost);
             newPost.images = new_img;
@@ -177,10 +178,13 @@ module.exports = {
                 }
             }
             return res.status(200).json({
-                message: 'Post deleted successfully!'
+                message: 'Post deleted successfully!',
+                status: 200
             })
         } catch (error) {
             next(error)
         }
-    }
+    },
+
+    
 }

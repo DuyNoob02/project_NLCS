@@ -13,7 +13,7 @@ route.post('/register', UserController.register)
 route.post('/login', UserController.login)
 
 route.delete('/logout', UserController.logout)
-route.delete('/deleteUser/:id', UserController.deleteUser)
+// route.delete('/deleteUser/:id', UserController.deleteUser)
 // route.get('/getInfoUser',verifyAccessToken ,UserController.getInfoUser)
 route.get('/getInfoUser/:id', UserController.getInfoUser)
 route.put('/update/:id', UserController.update)

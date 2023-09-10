@@ -3,8 +3,9 @@ const express = require('express')
 const app = express()
 const createError = require('http-errors')
 const Post = require('./Routes/Post.route')
-const cors = require('cors')
 const UserRouter = require('./Routes/User.route')
+const AdminRouter = require('./Routes/Admin.route')
+const cors = require('cors')
 require('./Helpers/connections_mongodb')
 require('dotenv').config()
 const client = require('./Helpers/connection_redis')
@@ -26,6 +27,7 @@ app.use(express.urlencoded({ extended: true }))
 app.use(cors())
 app.use('/api/item', Post);
 app.use('/api/user', UserRouter);
+app.use('/api/admin', AdminRouter)
 app.use('/uploads', express.static("uploads"));
 app.options('*', cors())
 app.use((req, res, next) => {

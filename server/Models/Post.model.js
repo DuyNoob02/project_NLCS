@@ -14,7 +14,8 @@ const realEstateSchema = new Schema({
         type: String
     },
     userID: {
-        type: String,
+        type: Schema.Types.ObjectId,
+        ref: 'User'
         // unique: true
     },
     name: {
@@ -58,6 +59,10 @@ const realEstateSchema = new Schema({
     pending: {
         type: Boolean,
         default: true
+    },
+    createAt: {
+        type: Date,
+        default: Date.now()
     }
 
 })

@@ -200,8 +200,9 @@ module.exports = {
             // console.log(userID);
 
             const data = await UserSchema.findById(userID)
+            console.log(data);
             // console.log(req.payload);
-            res.json({
+            return res.status(200).json({
                 ...data
             })
         } catch (error) {
@@ -234,27 +235,6 @@ module.exports = {
         }
     },
 
-    deleteUser: async (req, res, next) => {
-        try {
-            const UserID = req.params.id;
-            console.log(UserID);
-            const user = await UserSchema.findById({
-                _id: UserID
-            })
-
-            if (!user) {
-                createError.NotFound()
-            }
-            await UserSchema.findByIdAndDelete(
-                UserID
-            )
-            return res.status(200).json({
-                message: "Delete successfully!",
-                status: 200
-            })
-        } catch (error) {
-            next(error)
-        }
-    }
+    
 
 }

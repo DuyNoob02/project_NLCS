@@ -3,7 +3,7 @@ const route = express.Router()
 const Post = require('../Controllers/Post.controller')
 const multer = require('multer')
 const path = require('path');
-const {verifyAccessToken} = require('../Helpers/jwt_service');
+const { verifyAccessToken } = require('../Helpers/jwt_service');
 const uploadCloud = require('../Helpers/Post_cloudinary')
 // const storage = multer.diskStorage({
 //     destination: function (req, file, cb) {
@@ -22,6 +22,7 @@ const uploadCloud = require('../Helpers/Post_cloudinary')
 // }).single('images')
 
 route.get('/', Post.getAllPost)
+// route.get('/getPostPending', Post.getPostPending)
 route.get('/:id', Post.getPostByID)
 route.get('/getPost/:id', Post.getPostbyIdUser)
 route.post('/post', verifyAccessToken, uploadCloud.array('images'), Post.createPost)
