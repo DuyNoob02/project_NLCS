@@ -19,7 +19,7 @@
     </div>
     <div class="grid grid-cols-4 gap-3 mt-20 max-w-7xl w-full mx-auto">
         <div class="" v-for="item in response" :key="item._id">
-            <nuxt-link class=" " :to='`/detail/${item._id}`'>
+            <nuxt-link v-if="!item.pending" class=" " :to='`/detail/${item._id}`'>
                 <div class="max-w-sm rounded overflow-hidden shadow-lg min-h-max h-full">
                     <img class="w-full h-60" :src='`${item.images[0]}`' alt="">
                     <div class="w-full image-cover rounded-t-md">
@@ -89,6 +89,7 @@ interface Result {
     formality: string,
     description: string;
     images: string[];
+    pending: Boolean;
     __v: number
 }
 

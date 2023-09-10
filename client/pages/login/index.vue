@@ -1,6 +1,6 @@
 <template>
     <div class="grid grid-cols-4 mt-40">
-        <div class="col-span-2">1</div>
+        <div class="col-span-2"></div>
         <div class=" col-span-2 border max-w-md rounded-lg">
             <form class="space-y-4 md:space-y-6 py-3 px-3" action="#">
                 <h2 class="font-medium text-2xl border-b-2 border-slate-200 pb-2">Welcome to Alpha</h2>
@@ -73,6 +73,7 @@ const handleSubmit = async () => {
             localStorage.setItem('userID', response.data.value.data.userID)
             localStorage.setItem('refreshToken', response.data.value.data.refreshToken);
             localStorage.setItem('userName', response.data.value.data.fullName);
+            localStorage.setItem('role', response.data.value.data.role)
             alert('Đăng nhập với vai trò Admin')
             login()
             setUserName(response.data.value.data.fullName)
@@ -88,6 +89,7 @@ const handleSubmit = async () => {
             localStorage.setItem('userID', response.data.value.data.userID)
             localStorage.setItem('refreshToken', response.data.value.data.refreshToken);
             localStorage.setItem('userName', response.data.value.data.fullName);
+            localStorage.setItem('role', response.data.value.data.role)
             alert('Đăng nhập thành công')
             login()
             setUserName(response.data.value.data.fullName)

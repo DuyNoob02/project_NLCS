@@ -162,7 +162,7 @@ const acreage = ref('')
 const bedrooms = ref('')
 const price = ref('')
 const description = ref('')
-
+const createAt = Date.now()
 
 // const formatInput = (input) => {
 //     const numericValue = input.replace(/[^0-9]/g, '');
@@ -251,6 +251,7 @@ const handleSubmit = async () => {
     // console.log(formattedPrice);
     formData.append('price', price.value);
     formData.append('description', description.value);
+    formData.append('createAt', createAt)
     console.log(description);
     // Thêm các trường dữ liệu vào formData
     console.log('this is img', images.value.length);
