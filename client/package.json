@@ -24,6 +24,8 @@
     "@headlessui/vue": "^1.7.15",
     "@nuxt/http": "^0.6.4",
     "flowbite": "^1.8.1",
+    "jsonwebtoken": "^9.0.2",
+    "moment": "^2.29.4",
     "sass": "^1.64.1",
     "swiper": "^10.2.0"
   }
