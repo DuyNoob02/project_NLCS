@@ -57,16 +57,29 @@
         <div class="grid grid-cols-6 mt-10">
             <div class="cols-span-1 border-r-2">
                 <ul class="flex flex-col">
-                    <NuxtLink to="/admin" class="py-3 pl-5 group hover:bg-slate-600 hover:text-white cursor-pointer">
+                    <NuxtLink to="/admin" class="py-3 pl-5 group   cursor-pointer"
+                    :class="{ 'bg-slate-600 text-white py-2 px-2 ': activeLink === 'home' }" @click="selectedLink('home')">
                         Trang chủ
                     </NuxtLink>
                     <NuxtLink to="/admin/pendingPost"
-                        class="py-3 pl-5 group hover:bg-slate-600 hover:text-white cursor-pointer">
+                        class="py-3 pl-5 group   cursor-pointer"
+                        :class="{ 'bg-slate-600 text-white py-2 px-2 ': activeLink === 'pending' }" @click="selectedLink('pending')">
                         Bài đăng chờ duyệt
                     </NuxtLink>
+                    <NuxtLink to="/admin/allPost"
+                        class="py-3 pl-5 group   cursor-pointer"
+                        :class="{ 'bg-slate-600 text-white py-2 px-2 ': activeLink === 'allpost' }" @click="selectedLink('allpost')">
+                        Tất cả bài đăng
+                    </NuxtLink>
                     <NuxtLink to="/admin/userManagement"
-                        class="py-3 pl-5 group hover:bg-slate-600 hover:text-white cursor-pointer">
+                        class="py-3 pl-5 group   cursor-pointer"
+                        :class="{ 'bg-slate-600 text-white py-2 px-2 ': activeLink === 'user' }" @click="selectedLink('user')">
                         Người dùng
+                    </NuxtLink>
+                    <NuxtLink to="/admin/pendingDelete"
+                        class="py-3 pl-5 group   cursor-pointer"
+                        :class="{ 'bg-slate-600 text-white py-2 px-2 ': activeLink === 'pendingDel' }" @click="selectedLink('pendingDel')">
+                        Bài đăng chờ xóa
                     </NuxtLink>
                 </ul>
 
@@ -80,6 +93,8 @@
 </template>
 
 <script setup>
+const activeLink = ref('home')
+
 
 const dropdownOpen = ref(false);
 const toggleDropdown = () => {
@@ -111,6 +126,10 @@ const logout = async () => {
     }
 }
 
+
+const selectedLink = (link) => {
+    activeLink.value = link
+}
 
 </script>
 
