@@ -60,6 +60,10 @@ const realEstateSchema = new Schema({
         type: Boolean,
         default: true
     },
+    forDelete: {
+        type: Boolean,
+        default: false
+    },
     createAt: {
         type: Date,
         default: Date.now()

@@ -20,11 +20,13 @@ const uploadCloud = require('../Helpers/Post_cloudinary')
 //  const  upload = multer({
 //     storage: storage
 // }).single('images')
-
 route.get('/', Post.getAllPost)
+route.get('/getPost', Post.getPost)
 // route.get('/getPostPending', Post.getPostPending)
 route.get('/:id', Post.getPostByID)
-route.get('/getPost/:id', Post.getPostbyIdUser)
+route.get('/getPostbyUserId/:id', Post.getPostbyIdUser)
+route.get('/search/query', Post.search)
+route.get('/search/option', Post.searchPostfor)
 route.post('/post', verifyAccessToken, uploadCloud.array('images'), Post.createPost)
 // route.post('/post', upload, Post.createPost)
 route.put('/:id', uploadCloud.array('images'), Post.updatePost)

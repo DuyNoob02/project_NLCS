@@ -27,16 +27,16 @@ POST  http://localhost:3001/api/user/register
 Content-Type: application/json
 
 {
-    "fullName": "nguyenkhacduy",
-    "phoneNumber": "0778125400",
-    "password": "12345"
+    "fullName": "NguyenKhacDuy2",
+    "phoneNumber": "1234567890",
+    "password": "1234"
 }
 ###
 POST http://localhost:3001/api/user/login
 Content-Type: application/json
 
 {
-    "phoneNumber": "0778125400",
+    "phoneNumber": "0778125494",
     "password": "12345"
 }
 
@@ -45,7 +45,7 @@ POST http://localhost:3001/api/user/refresh-token
 Content-Type: application/json
 
 {
-    "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySUQiOiI2NGM1Y2Y4MjBlMzgyYzA2MTEwMzZiYmYiLCJpYXQiOjE2OTA4NTgyMTMsImV4cCI6MTY5MTQ2MzAxM30.1MH7kTsq_Qy2IqR-cgHUIiswpv4oYWZBvOKJK2dEtck"
+    "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySUQiOiI2NGM1Y2Y4MjBlMzgyYzA2MTEwMzZiYmYiLCJpYXQiOjE2OTE4MjQyMDgsImV4cCI6MTY5MjQyOTAwOH0.cATrrgJJek6AMvWHPj_L_9kXCk9d-I3SYinJbOg8JB8"
 }
 
 ###
@@ -57,5 +57,5 @@ DELETE http://localhost:3001/api/user/logout
 Content-Type: application/json
 
 {
-    "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySUQiOiI2NGM1Y2Y4MjBlMzgyYzA2MTEwMzZiYmYiLCJpYXQiOjE2OTE1NjExNDYsImV4cCI6MTY5MjE2NTk0Nn0.hgScGhR9KMgFExG745mTjyF9w_FuCPECubvvX-vIE3Y"
+    "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySUQiOiI2NGM1Y2Y4MjBlMzgyYzA2MTEwMzZiYmYiLCJpYXQiOjE2OTE4Mjc5ODksImV4cCI6MTY5MjQzMjc4OX0.ydSwlxI3THW9dNhpZwgOqQt4xwnzs1KaiyDw6PR6eSw"
 }
