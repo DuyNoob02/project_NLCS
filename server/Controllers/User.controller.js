@@ -13,7 +13,7 @@ module.exports = {
             const result = await UserSchema.find({
                 role: 'user'
             });
-            // console.log(result);
+            console.log(result);
             if (!result) {
                 createError.NotFound();
             }

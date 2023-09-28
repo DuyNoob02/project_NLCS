@@ -2,17 +2,46 @@ const createError = require('http-errors')
 const Post = require('../Models/Post.model')
 const fs = require('fs')
 const verifyAccessToken = require('../Helpers/jwt_service')
+// const { findByIdAndUpdate } = require('../Models/User.model')
 
 
 module.exports = {
-    getAllPost: async (req, res, next) => {
+    getPost: async (req, res, next) => {
         try {
-            const result = await Post.find();
+            const result = await Post.find({
+                pending: false,
+                forDelete: false
+            }).sort({ createAt: -1 }).limit(8);
             if (!result) {
                 throw createError.NotFound()
             }
             return res.json({
                 result
+            })
+        } catch (error) {
+            next(error)
+        }
+    },
+    getAllPost: async (req, res, next) => {
+        const page = req.query.page || 1;
+        const perPage = 8;
+        try {
+            const result = await Post.find({
+                pending: false,
+                forDelete: false
+            })
+                .sort({ createAt: -1 }) // sắp xếp theo thời gian tạo của bài viết
+                .skip((page - 1) * perPage) // Bỏ qua bài viết trên các trang trước đó
+                .limit(perPage) // giới hạn bài viết trên trang hiện tại
+            if (!result) {
+                throw createError.NotFound()
+            }
+            const totalPosts = await Post.countDocuments({ pending: false })
+            // console.log(totalPosts);
+            const totalPages = Math.ceil(totalPosts / perPage)
+            return res.json({
+                result,
+                totalPages
             })
         } catch (error) {
             next(error)
@@ -106,7 +135,7 @@ module.exports = {
         // console.log(req.params);
         // console.log(id);
         try {
-            const result = await Post.find({ userID: id });
+            const result = await Post.find({ userID: id, pending: false });
             if (!result) {
                 throw createError.NotFound('Khong co bai dang')
             }
@@ -117,43 +146,33 @@ module.exports = {
     },
 
     updatePost: async (req, res, next) => {
-        const id = req.params.id;
-        let new_img = "";
         try {
-            const postToUpdate = await Post.findById(id);
-            if (!postToUpdate) {
+            const { id } = req.params;
+            console.log(req.params);
+            const { code, name, formality, address, acreage, bedrooms, bathrooms,
+                livingRooms, amenities, price, type, description } = req.body;
+            const numericValue = price.replace(/[^0-9]/g, '');
+            const existingPost = await Post.findById({_id: id});
+
+            if (!existingPost) {
                 throw createError.NotFound('Post not found.')
             }
+            const oldImages = existingPost.images
+            const newImages = req.files ? req.files.map(file => file.path) : [];
+            const imagesToUpdate = newImages.length > 0 ? newImages : oldImages;
 
-            // if (req.file) {
-            //     // Kiểm tra đường dẫn hình ảnh cũ
-            //     const old_img_path = './uploads/' + req.file.filename;
-            //     if (postToUpdate.images) {
-            //         try {
-            //             fs.unlinkSync(old_img_path);
-            //         } catch (error) {
-            //             console.error('Error deleting old image:', error);
-            //         }
-            //     }
-            //     // Cập nhật đường dẫn hình ảnh mới
-            //     new_img = req.file.filename;
-            // }
-            // else {
-            //     new_img = postToUpdate.images;
-            // }
-            const newPost = req.body;
-            // console.log(newPost);
-            newPost.images = new_img;
-            try {
-                const result = await Post.findByIdAndUpdate(id, newPost);
-                // console.log(result);
-                res.json({
-                    status: 'success',
-                    message: "Post update successfully!",
-                });
-            } catch (error) {
-                next(error)
+            const updatedPost = await Post.findByIdAndUpdate({ _id: id }, {
+                code: code, name: name, formality: formality, address: address, acreage: acreage, bedrooms: bedrooms, bathrooms,
+                price: numericValue, type: type, livingRooms, amenities, description: description, images: imagesToUpdate
+            }, { new: true })
+            if (!updatedPost) {
+                throw createError.NotFound(`Post with ID ${id} not found`);
             }
+            res.json({
+                status: 'success',
+                message: "Post update successfully!",
+            });
+
         } catch (error) {
             next(error);
         }
@@ -186,5 +205,33 @@ module.exports = {
         }
     },
 
-    
+    search: async (req, res, next) => {
+        try {
+            const { name } = req.query;
+            // console.log(req.query);
+            const properties = await Post.find({
+                pending: false,
+                $text: { $search: name },
+            })
+            res.json(properties);
+            // console.log(properties);
+        } catch (error) {
+            createError.NotFound()
+        }
+    },
+
+    searchPostfor: async (req, res, next) => {
+        try {
+            const { option } = req.query
+            // console.log(option);
+            const result = await Post.find({
+                pending: false,
+                formality: option
+            })
+            res.json(result)
+        } catch (error) {
+            res.json({ message: error.message })
+        }
+    }
+
 }
