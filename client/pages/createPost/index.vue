@@ -50,6 +50,7 @@
                                 class="absolute top-0 h-full w-full px-2.5 text-gray-900 border border-gray-300 rounded-lg focus:ring-primary-600 focus:border-primary-600 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 bg-gray-50 dark:bg-gray-700 dark:border-gray-600">
                                 <option class="px-5 " value="Đất nền">Đất nền</option>
                                 <option class="px-5 " value="Căn hộ chung cư">Căn hộ chung cư</option>
+                                <option class="px-5 " value="Căn hộ chung cư">Biệt thự</option>
                                 <option class="px-5 " value="Nhà riêng">Nhà riêng</option>
                                 <option class="px-5 " value="Nhà mặt phố">Nhà mặt phố</option>
                                 <option class="px-5 " value="Khu nghỉ dưỡng">Khu nghỉ dưỡng</option>
@@ -144,6 +145,7 @@
 import { ref, computed } from 'vue';
 import { useRouter } from 'vue-router';
 import { formatInput } from '../../composables/convertPrice'
+
 // import { useI18n } from 'vue-i18n';
 // const { t } = useI18n();
 const router = useRouter()
