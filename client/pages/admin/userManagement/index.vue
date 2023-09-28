@@ -54,6 +54,7 @@ definePageMeta({
 
 const ListUser = ref([])
 const { data: getListUser } = await useFetch('http://localhost:3001/api/user/', { method: 'GET' })
+// console.log("🚀 ~ file: index.vue:58 ~ console.log(getListUser.value):", console.log(getListUser))
 console.log(getListUser.value.result);
 ListUser.value = getListUser.value.result
 

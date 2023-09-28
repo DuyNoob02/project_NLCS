@@ -1,12 +1,10 @@
 <template>
-    <div>
+    <div v-if="Post.forDelete != true">
 
         <div class="flex items-center justify-center mt-10">
             <!-- {{ Post.id }} -->
             <button @click="deletePost(Post._id)"
                 class="border px-5 py-3 mr-5 bg-red-500 text-white hover:bg-red-500 hover:text-slate-500">Xóa</button>
-            <button @click="acceptPost(Post._id)"
-                class="border px-5 py-3 bg-blue-600 text-white hover:bg-blue-500 hover:text-slate-500">Duyệt</button>
         </div>
 
         <div class="grid grid-cols-5  gap-4 place-content-center max-w-7xl w-full mx-auto ">
