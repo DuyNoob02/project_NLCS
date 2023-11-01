@@ -1,6 +1,7 @@
 <template>
     <div>
-        <h2 class="text-lg uppercase font-medium text-cyan-400">Thống kê lượng bài đăng</h2>
+        
+        <h3 class="flex justify-center items-center text-lg">Bài đăng trong 14 ngày qua</h3>
         <canvas ref="chartCanvas"></canvas>
     </div>
 </template>

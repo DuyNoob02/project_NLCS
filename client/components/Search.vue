@@ -1,6 +1,6 @@
 <template>
-    <div class="flex justify-center items-center ">
-        <form class=" w-full ">
+    <div class="flex justify-center items-center">
+        <form class=" w-auto h-auto  py-5 px-40">
             <div class="flex relative">
                 <!-- <label for="search-dropdown" class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Your
                     Email</label>
@@ -31,7 +31,7 @@
                     </ul>
                 </div> -->
                 <div class="relative w-full">
-                    <input type="search"  v-model="searchQuery"
+                    <input type="search" v-model="searchQuery" @change="handleInputChange"
                         class="block p-2 w-full z-20 text-sm text-gray-900 bg-gray-50 rounded-r-lg rounded-l-lg  border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-l-gray-700  dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:border-blue-500"
                         placeholder="Chung cư, Nhà ở, Đất nền..." required>
                     <button type="button" @click="handleSubmit"
@@ -45,6 +45,48 @@
                     </button>
                 </div>
             </div>
+            <div class="flex mt-1 " @change="handleSelectChange">
+                <div class="">
+                    <select v-model="selectedFormality" class="rounded-md text-sm">
+                        <option value="" disabled selected>Chọn hình thức</option>
+                        <option value="Bán">Bán</option>
+                        <option value="Cho thuê">Cho Thuê</option>
+                    </select>
+                </div>
+                <div class="ml-2">
+                    <select v-model="selectedType" class="rounded-md text-sm">
+                        <option value="" disabled selected>Chọn loại hình</option>
+                        <option class="px-5 " value="Đất nền">Đất nền</option>
+                        <option class="px-5 " value="Căn hộ chung cư">Căn hộ chung cư</option>
+                        <option class="px-5 " value="Căn hộ chung cư">Biệt thự</option>
+                        <option class="px-5 " value="Nhà riêng">Nhà riêng</option>
+                        <option class="px-5 " value="Nhà mặt phố">Nhà mặt phố</option>
+                        <option class="px-5 " value="Khu nghỉ dưỡng">Khu nghỉ dưỡng</option>
+                        <option class="px-5 " value="Nhà xưởng">Nhà xưởng</option>
+                        <option class="px-5 " value="Condotel">Condotel</option>
+                    </select>
+                </div>
+                <div class="ml-2">
+                    <!-- <label for="tinh">Chon tinh</label> -->
+                    <select v-model="selectedTinh" @change="updateHuyens" class="rounded-md text-sm">
+                        <option value="" disabled selected>Chọn Tỉnh Thành</option>
+                        <option v-for="(tinh, index) in tinhs" :key="index" :value="tinh.province_id">
+                            {{ tinh.province_name }}
+                        </option>
+                    </select>
+                </div>
+                <div class="ml-2">
+                    <!-- <label for="huyen">Chọn quận/huyện:</label> -->
+                    <select v-model="selectedHuyen" class="rounded-md text-sm">
+                        <option value="" disabled selected>Chọn Quận Huyện</option>
+                        <option v-for="(huyen, index) in huyens" :key="index" :value="huyen.district_name">
+                            {{ huyen.district_name }}
+                        </option>
+                    </select>
+                </div>
+
+            </div>
+
         </form>
     </div>
 </template>
@@ -53,6 +95,13 @@
 import { ref } from 'vue';
 const route = useRouter()
 const searchQuery = ref('')
+const selectedFormality = ref('')
+const selectedType = ref('')
+const selectedTinh = ref('');
+const selectedHuyen = ref('');
+const tinhs = ref([]);
+const huyens = ref([]);
+const query = ref('')
 
 // const dropdownSearch = ref(false);
 // const selectedOption = ref('Bán')
@@ -60,11 +109,38 @@ const searchQuery = ref('')
 //     selectedOption.value = type
 //     dropdownSearch.value = false
 // }
+const handleInputChange = () => {
+    query.value = searchQuery.value
+}
+// const selectQuery = `${selectedFormality.value}-${selectedType.value}-${selectedTinh.value}-${selectedHuyen.value}`
+const handleSelectChange = () => {
+    console.log(selectedFormality.value);
+    console.log(selectedType.value);
+    console.log(selectedTinh.value);
 
+    // console.log(index);
+    console.log(selectedHuyen.value);
+    let ProvinceName = '';
 
+    for (let i = 0; i < tinhs.value.length; i++) {
+        const tinh = tinhs.value[i];
+        if (selectedTinh.value === tinh.province_id) {
+            ProvinceName = tinh.province_name;
+            break; // Khi tìm thấy, dừng vòng lặp
+        }
+    }
+    query.value = `${selectedFormality.value}-${selectedType.value}-${ProvinceName}-${selectedHuyen.value}`
+}
+console.log(query.value);
+const { data: ProvinceData } = await useFetch('https://vapi.vnappmob.com/api/province', {
+    method: 'GET'
+})
+// console.log(ProvinceData.value.results);
+tinhs.value = ProvinceData.value.results
+console.log(tinhs.value);
 const handleSubmit = async () => {
-    console.log(searchQuery.value);
-    route.push(`/search/${searchQuery.value}`)
+    console.log(query.value);
+    route.push(`/search/${query.value}`)
     // if (searchQuery.value === '') {
     //     if(selectedOption.value === 'Bán'){
     //         route.push('/search/sell')
@@ -84,6 +160,13 @@ const handleSubmit = async () => {
 //     dropdownSearch.value = !dropdownSearch.value
 // }
 
+
+const updateHuyens = async () => {
+    const { data: DictrictData } = await useFetch(`https://vapi.vnappmob.com/api/province/district/${selectedTinh.value}`, {
+        method: 'GET'
+    })
+    huyens.value = DictrictData.value.results
+}
 </script>
 
 <style lang="scss" scoped></style>
