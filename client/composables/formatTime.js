@@ -17,7 +17,7 @@ export function formatTimeAgo(isoDate) {
     }
 }
 
-const isoDate = "2023-09-08T03:03:47.652+00:00";
-const formattedTimeAgo = formatTimeAgo(isoDate);
+// const isoDate = "2023-10-05T04:07:02.512Z";
+// const formattedTimeAgo = formatTimeAgo(isoDate);
 // console.log(formattedTimeAgo)
 // console.log("🚀 ~ file: formatTime.js:23 ~ console.log(formattedTimeAgo):", console.log(formattedTimeAgo))

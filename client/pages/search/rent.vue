@@ -1,13 +1,13 @@
 <template>
     <div class="mb-20">
-        <div class="mt-40 flex justify-center">
-            <h1 class="text-3xl uppercase relative group">
+        <div class="mt-20 flex justify-center">
+            <h1 class="text-2xl uppercase relative group">
                 Bất động sản cho thuê
                 <span
                     class="absolute bottom-0 left-0 w-full h-0.5 bg-black transform scale-x-0 group-hover:scale-x-100 transition-transform ease-in-out duration-200"></span>
             </h1>
         </div>
-        <div class="grid grid-cols-4 gap-3 mt-20 max-w-7xl w-full mx-auto">
+        <div class="grid grid-cols-4 gap-3 mt-10 max-w-7xl w-full mx-auto">
             <div class="" v-for="item in searchResult.value" :key="item._id">
                 <nuxt-link class=" " :to='`/detail/${item._id}`'>
                     <div class="max-w-sm rounded overflow-hidden shadow-lg min-h-max h-full">

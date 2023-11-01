@@ -19,7 +19,8 @@ export default defineNuxtConfig({
     {
       src: '~/plugins/vue-i18n.js',
       mode: 'client' // Load only on the client side
-    }
+    },
+    // '~/plugins/socket.io.js'
   ],
     
   postcss: {

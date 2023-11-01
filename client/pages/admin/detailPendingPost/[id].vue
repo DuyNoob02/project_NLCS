@@ -112,8 +112,8 @@ const userID = Post.value.userID
 const { data: getUserInfo } = await useFetch(`http://localhost:3001/api/user/getInfoUser/${userID}`, {
     method: "GET",
 })
-// console.log(getUserInfo);
-const userInfo = getUserInfo.value._doc;
+console.log(getUserInfo._value);
+const userInfo = getUserInfo._value;
 // console.log(userInfo);
 
 

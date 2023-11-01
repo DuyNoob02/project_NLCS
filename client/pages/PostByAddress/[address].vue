@@ -1,16 +1,20 @@
 <template>
-    <div class="mb-20">
-        <h2 class="justify-center items-center flex mt-32 text-1xl font-medium">
-            Kết quả cho tìm kiếm: {{ stdQuery }}
-        </h2>
-        <div v-if="exist=== true" class="grid grid-cols-4 gap-3 mt-20 max-w-7xl w-full mx-auto">
-            <div class="" v-for="item in searchResult" :key="item._id">
-                <nuxt-link  class=" " :to='`/detail/${item._id}`'>
-                    <div  class="max-w-sm rounded overflow-hidden shadow-lg min-h-max h-full">
+    <div class="mt-20">
+        <div class=" flex justify-center">
+            <h1 class="text-2xl uppercase relative group">
+                Bất động sản tại {{ address }}
+                <span
+                    class="absolute bottom-0 left-0 w-full h-0.5 bg-black transform scale-x-0 group-hover:scale-x-100 transition-transform ease-in-out duration-200"></span>
+            </h1>
+        </div>
+        <div class="grid grid-cols-4 gap-3 mt-20 max-w-7xl w-full mx-auto mb-20">
+            <div class="" v-for="item in PostList" :key="item._id">
+                <nuxt-link v-if="item.pending != true && item.forDelete != true" class=" " :to='`/detail/${item._id}`'>
+                    <div class="max-w-sm rounded overflow-hidden shadow-lg min-h-max h-full">
                         <img class="w-full h-60" :src='`${item.images[0]}`' alt="">
                         <div class="w-full image-cover rounded-t-md">
                             <div
-                                class="px-2 pb-6 m-4 w-auto h-5 text-center bg-gray-700 rounded-full text-white float-right group-hover:opacity-25 justify-center items-center">
+                                class=" rounded-full px-2 pb-6 items-center m-4 w-auto h-5 text-center bg-gray-700  text-white float-right group-hover:opacity-25 justify-center ">
                                 <!-- <span class="text-base tracking-wide  font-bold border-b border-white font-sans"> Loại</span> -->
                                 <!-- <span class="text-xs  font-bold uppercase block font-sans">Cho thuê</span> -->
                                 <p class="">{{ item.formality }}</p>
@@ -39,38 +43,17 @@
 
             </div>
         </div>
-        <div v-else class="mt-20">Không tìm thấy</div>
     </div>
 </template>
 
 <script setup>
-import { formatInput } from '../../composables/convertPrice';
 const route = useRoute()
-// console.log(route.query.option);
-
-const searchQuery = route.params.query || ''
-const Querysplt = searchQuery.split("-")
-const stdQuery = Querysplt.join(" ")
-// console.log(stdQuery)
-console.log("🚀 ~ file: [query].vue:54 ~ console.log(stdQuery):", console.log(stdQuery))
-// console.log(searchQuery + 'query');
-// const selectedOption = route.query.option
-const searchResult = ref([])
-const { data: handleSearch } = await useFetch(`http://localhost:3001/api/item/search/query?name=${searchQuery}`, {
-    method: 'GET'
-})
-// console.log(handleSearch.value);
-
-
-const exist = ref(true)
-searchResult.value = handleSearch.value
-// console.log(handleSearch.value.properties);
-if(!searchResult){
-    exist.value = false
-}else{
-    exist.value = true
-}
-// console.log(searchResult.value.properties);
+import {formatInput} from '../../composables/convertPrice'
+console.log(route.params.address);
+const address = route.params.address
+const { data: getPost } = await useFetch(`http://localhost:3001/api/item/list/PostAddress?address=${address}`)
+console.log(getPost.value.result);
+const PostList = getPost.value.result
 </script>
 
 <style lang="scss" scoped></style>

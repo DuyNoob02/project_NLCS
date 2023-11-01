@@ -1,7 +1,9 @@
 <template>
     <div>
-        <header class="flex items-center justify-between border-b-2  drop-shadow-lg">
-            <NuxtLink to="/admin" class="ml-20 text-3xl font-medium uppercase  py-5 cursor-pointer">Alpha Admin</NuxtLink>
+        <header class="flex items-center bg-slate-500 justify-between border-b-2  drop-shadow-lg">
+            <NuxtLink to="/admin" class="ml-20 text-3xl font-medium uppercase  py-5 cursor-pointer">
+                alpha admin
+            </NuxtLink>
             <!-- <div class="group relative">
                 <div class="mr-20">
                     <button class="border p-3 rounded-md hover:bg-slate-300 hover:text-slate-50 cursor-pointer"
@@ -58,27 +60,33 @@
             <div class="cols-span-1 border-r-2">
                 <ul class="flex flex-col">
                     <NuxtLink to="/admin" class="py-3 pl-5 group   cursor-pointer"
-                    :class="{ 'bg-slate-600 text-white py-2 px-2 ': activeLink === 'home' }" @click="selectedLink('home')">
+                        :class="{ 'bg-slate-600 text-white py-2 px-2 ': activeLink === 'home' }"
+                        @click="selectedLink('home')">
                         Trang chủ
                     </NuxtLink>
-                    <NuxtLink to="/admin/pendingPost"
-                        class="py-3 pl-5 group   cursor-pointer"
-                        :class="{ 'bg-slate-600 text-white py-2 px-2 ': activeLink === 'pending' }" @click="selectedLink('pending')">
+                    <NuxtLink to="/admin/pendingPost" class="py-3 pl-5 group   cursor-pointer"
+                        :class="{ 'bg-slate-600 text-white py-2 px-2 ': activeLink === 'pending' }"
+                        @click="selectedLink('pending')">
                         Bài đăng chờ duyệt
                     </NuxtLink>
-                    <NuxtLink to="/admin/allPost"
-                        class="py-3 pl-5 group   cursor-pointer"
-                        :class="{ 'bg-slate-600 text-white py-2 px-2 ': activeLink === 'allpost' }" @click="selectedLink('allpost')">
+                    <NuxtLink to="/admin/allPost" class="py-3 pl-5 group   cursor-pointer"
+                        :class="{ 'bg-slate-600 text-white py-2 px-2 ': activeLink === 'allpost' }"
+                        @click="selectedLink('allpost')">
                         Tất cả bài đăng
                     </NuxtLink>
-                    <NuxtLink to="/admin/userManagement"
-                        class="py-3 pl-5 group   cursor-pointer"
-                        :class="{ 'bg-slate-600 text-white py-2 px-2 ': activeLink === 'user' }" @click="selectedLink('user')">
+                    <NuxtLink to="/admin/userManagement" class="py-3 pl-5 group   cursor-pointer"
+                        :class="{ 'bg-slate-600 text-white py-2 px-2 ': activeLink === 'user' }"
+                        @click="selectedLink('user')">
                         Người dùng
                     </NuxtLink>
-                    <NuxtLink to="/admin/pendingDelete"
-                        class="py-3 pl-5 group   cursor-pointer"
-                        :class="{ 'bg-slate-600 text-white py-2 px-2 ': activeLink === 'pendingDel' }" @click="selectedLink('pendingDel')">
+                    <NuxtLink to="/admin/accountPending" class="py-3 pl-5 group   cursor-pointer"
+                        :class="{ 'bg-slate-600 text-white py-2 px-2 ': activeLink === 'accountPeding' }"
+                        @click="selectedLink('accountPeding')">
+                        Tài khoản chờ duyệt
+                    </NuxtLink>
+                    <NuxtLink to="/admin/pendingDelete" class="py-3 pl-5 group   cursor-pointer"
+                        :class="{ 'bg-slate-600 text-white py-2 px-2 ': activeLink === 'pendingDel' }"
+                        @click="selectedLink('pendingDel')">
                         Bài đăng chờ xóa
                     </NuxtLink>
                 </ul>

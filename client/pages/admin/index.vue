@@ -3,6 +3,8 @@
         <div class="grid grid-cols-6 ">
             <div class="col-span-5 ">
                 <div>
+                    <h2 class="text-lg uppercase font-medium text-cyan-400">Thống kê lượng bài đăng</h2>
+                    <ChartPostPerMonth class="w-96 h-96 mb-10"/>
                     <Chart/>
                 </div>
             </div>

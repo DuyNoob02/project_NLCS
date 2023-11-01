@@ -4,7 +4,7 @@
             <div class="col-span-1">
             </div>
             <div class="col-span-2 grid-cols-2 max-w-sm rounded overflow-hidden shadow-lg mr-5">
-                <img v-if="isAVT" class="h-40 w-40 object-cover mx-auto rounded-full" :src='`${userInfo._doc.image}`' alt="">
+                <img v-if="isAVT" class="h-40 w-40 object-cover mx-auto rounded-full" :src='`${userInfo.image}`' alt="">
                 <img v-else class="w-44 mx-auto rounded"
                     src="https://www.nicepng.com/png/detail/933-9332131_profile-picture-default-png.png"
                     alt="Profile Picture Default Png@nicepng.com">
@@ -25,7 +25,7 @@
                         </div>
                         <img v-if="isAVT"
                             class="col-span-1 cursor-pointer avatar mb-4 w-60 h-40 bg-cover object-cover rounded-full"
-                            :src="`${userInfo._doc.image}`" alt="">
+                            :src="`${userInfo.image}`" alt="">
 
                         <img v-else class="col-span-1 cursor-pointer avatar mb-4" :src="avatarSrc" alt="">
                         <input type="file" @change="handleFileChange" accept="image/*" name="image" class="rounded-sm" />
@@ -102,11 +102,18 @@ const { data: getUserInfo } = await useFetch(`http://localhost:3001/api/user/get
 
 const userInfo = getUserInfo.value;
 // console.log(userInfo._doc);
-const phoneNumber = ref(userInfo._doc.phoneNumber)
-const fullName = ref(userInfo._doc.fullName)
-const address = ref(userInfo._doc.address)
-const email = ref(userInfo._doc.email)
-if (userInfo._doc.image) {
+// const phoneNumber = ref(userInfo._doc.phoneNumber)
+// const fullName = ref(userInfo._doc.fullName)
+// const address = ref(userInfo._doc.address)
+// const email = ref(userInfo._doc.email)
+// if (userInfo._doc.image) {
+//     isAVT.value = true
+// }
+const phoneNumber = ref(userInfo.phoneNumber)
+const fullName = ref(userInfo.fullName)
+const address = ref(userInfo.address)
+const email = ref(userInfo.email)
+if (userInfo.image) {
     isAVT.value = true
 }
 

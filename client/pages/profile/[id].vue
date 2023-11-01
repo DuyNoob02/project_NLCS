@@ -109,7 +109,7 @@ const { data: getUserInfo } = await useFetch(`http://localhost:3001/api/user/get
     method: "GET",
 })
 // console.log(getUserInfo);
-const userInfo = getUserInfo.value._doc;
+const userInfo = getUserInfo.value;
 console.log(userInfo);
 
 const { data: GetPostofUser } = await useFetch(`http://localhost:3001/api/item/getPostbyUserId/${id}`, {

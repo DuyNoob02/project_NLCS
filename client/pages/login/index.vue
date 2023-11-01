@@ -21,6 +21,7 @@
                         required="">
                 </div>
                 <p v-if="loginError" class="text-red-500"> Thông tin đăng nhập không hợp lệ</p>
+                <p v-if="Activated == false" class="text-red-500"> Tài khoản chưa được kích hoạt</p>
                 <button type="button" @click="handleSubmit"
                     class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center mr-3 md:mr-0 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                     Đăng nhập
@@ -49,6 +50,7 @@ const router = useRouter()
 const phoneNumber = ref('');
 const password = ref('')
 const loginError = ref(false);
+const Activated = ref(true)
 const handleSubmit = async () => {
     const formData = {
         phoneNumber: phoneNumber.value,
@@ -63,11 +65,16 @@ const handleSubmit = async () => {
             },
             body: formData
         })
-        console.log(">>> in ra role", response.data);
-        if (response.data.value.status == '401' || response.data.value.status == '500') {
-            loginError.value = true
+        console.log(">>> in ra role", response.data.value.message);
+        if (response.data.value.status == '401' && response.data.value.message === 'Un-Actived') {
+            Activated.value = false
+            stop
         }
-        else if(response.data.value.data.role === 'admin'){
+        else if (response.data.value.status == '401' || response.data.value.status == '500') {
+            loginError.value = true
+            Activated.value = true
+        }
+        else if (response.data.value.data.role === 'admin') {
             localStorage.setItem('accessToken', response.data.value.data.accessToken);
             // console.log(response.data.value.refreshToken);
             localStorage.setItem('userID', response.data.value.data.userID)

@@ -7,8 +7,15 @@
             </swiper-slide>
         </swiper>
     </div> -->
-
-    <SlideShow class="mt-40" />
+    <!-- <Search/> -->
+    <!-- <SlideShow class="mt-40" /> -->
+    <div class="relative">
+        <img src="/slides/3.jpg" alt="" class="w-full h-auto" />
+        <div class="absolute inset-0 justify-center bg-black bg-opacity-50 mt-40">
+            <!-- Nội dung của phần tìm kiếm -->
+            <Search />
+        </div>
+    </div>
     <!-- NewPost section -->
     <div class="border-b-2 pb-5">
         <div class="mt-20 flex justify-center">
@@ -107,6 +114,7 @@
             </div>
         </div>
     </div>
+    <CountPost/>
 
     <div class="mb-20"></div>
 </template>
@@ -161,7 +169,7 @@ const { data } = await useFetch<
 })
 
 const response = (data.value?.result) as Result[]
-console.log(response);
+// console.log(response);
 
 
 
@@ -171,7 +179,7 @@ const { data: handleSearch } = await useFetch(`http://localhost:3001/api/item/se
 // console.log(handleSearch);
 // console.log("🚀 ~ file: index.vue:171 ~ handleSearch:", handleSearch)
 const postForsale = (handleSearch.value) as Result[]
-console.log("🚀 ~ file: index.vue:173 ~ postForsale:", postForsale)
+// console.log("🚀 ~ file: index.vue:173 ~ postForsale:", postForsale)
 
 
 </script>

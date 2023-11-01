@@ -1,6 +1,6 @@
 <template>
     <div>
-        <h2 class="text-lg uppercase font-medium text-cyan-400">danh sách người dùng</h2>
+        <h2 class="text-lg uppercase font-medium text-cyan-400">Tài khoản chờ duyệt</h2>
         <div class="relative overflow-x-auto shadow-md sm:rounded-lg mt-3">
             <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                 <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
@@ -31,8 +31,10 @@
                             {{ user.phoneNumber }}
                         </td>
                         <td class="px-6 py-4">
-                            <button
-                                class="border mr-2 px-2 py-1 rounded-md bg-cyan-400 text-white hover:bg-cyan-200 hover:text-black ">Sửa</button>
+                            <button @click="acceptUser(user._id)"
+                                class="border mr-2 px-2 py-1 rounded-md bg-cyan-400 text-white hover:bg-cyan-200 hover:text-black ">
+                                Duyệt
+                            </button>
                             <button v-if="!user.showDeleteButton"
                                 class="border px-2 py-1 rounded-md bg-red-600 text-white hover:bg-red-700 "
                                 @click="user.showDeleteButton = true">Xóa</button>
@@ -47,42 +49,30 @@
 </template>
 
 <script setup>
-
 definePageMeta({
     layout: "custom",
 });
 
 const ListUser = ref([])
-const { data: getListUser } = await useFetch('http://localhost:3001/api/admin/getAllUser', { method: 'GET' })
+const { data: getListUser } = await useFetch('http://localhost:3001/api/admin/getAccount', { method: 'GET' })
 // console.log("🚀 ~ file: index.vue:58 ~ console.log(getListUser.value):", console.log(getListUser))
 console.log(getListUser.value.result);
 ListUser.value = getListUser.value.result
 
-
-
-const deleteUser = async (userID, index) => {
-    console.log(userID);
+const acceptUser = async (id) => {
     try {
-        const response = await useFetch(`http://localhost:3001/api/admin/deleteUser/${userID}`, {
-            method: 'DELETE'
+        const result = await useFetch(`http://localhost:3001/api/admin/acceptUser/${id}`, {
+            method: 'PUT'
         })
-        console.log(response.data.value);
-        if (response.data.value.status === 200) {
-            localStorage.removeItem('accessToken')
-            localStorage.removeItem('userID')
-            localStorage.removeItem('refreshToken')
-            localStorage.removeItem('userName')
-            localStorage.removeItem('role')
-            alert('Xóa thành công')
+        console.log(result.data.value.result.accept);
+        if(result.data.value.result.accept === true){
+            alert("Tài khoản đã được duyệt")
             window.location.reload()
-            ListUser.value[index].showDeleteButton = false
         }
     } catch (error) {
-        console.log(error);
+        
     }
 }
 </script>
 
-<style  scoped>
-
-</style>
+<style lang="scss" scoped></style>

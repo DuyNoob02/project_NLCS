@@ -74,7 +74,7 @@ const handleSubmit = async () => {
         })
         console.log(response.status);
         if(response.status.value == 'success'){
-            router.push('/login')
+            router.push('/')
         }
     } catch (error) {
         return error;
