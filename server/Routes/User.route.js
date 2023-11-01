@@ -16,6 +16,7 @@ route.delete('/logout', UserController.logout)
 // route.delete('/deleteUser/:id', UserController.deleteUser)
 // route.get('/getInfoUser',verifyAccessToken ,UserController.getInfoUser)
 route.get('/getInfoUser/:id', UserController.getInfoUser)
+route.get('/getContactList/:id', UserController.getContactList)
 route.put('/update/:id', UserController.update)
 route.put('/updateAvt/:id', User_uploadCloud.single('image'), UserController.updateAVT)
 
