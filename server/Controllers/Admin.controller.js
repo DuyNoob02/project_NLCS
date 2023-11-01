@@ -2,10 +2,27 @@ const createError = require('http-errors')
 const Post = require('../Models/Post.model')
 const UserSchema = require('../Models/User.model')
 const client = require('../Helpers/connection_redis')
-
+const transporter = require('../Helpers/nodemailer.helper')
 
 
 module.exports = {
+    fetchAll: async (req, res, next) => {
+        try {
+            const result = await UserSchema.find({
+                role: 'user',
+                accept: true
+            });
+            // console.log(result);
+            if (!result) {
+                createError.NotFound();
+            }
+            res.json({
+                result
+            })
+        } catch (error) {
+            next(error)
+        }
+    },
     getPostPending: async (req, res, next) => {
         try {
             const response = await Post.find({ pending: true }).populate('userID', 'fullName');
@@ -17,6 +34,38 @@ module.exports = {
             return res.json(response);
         } catch (error) {
             next(error);
+        }
+    },
+    sendConfirmationAccount: async (req, res, next) => {
+        const {email, username} = req.body
+        const mailOptions = {
+            from: 'nguyenkhachuy25122002@gmail.com',
+            to: email,
+            subject: 'Kích hoạt tài khoản',
+            text: `Chào mừng ${username}, tài khoản của bạn đã được kích hoạt, từ giờ bạn có thể đăng bài viết, nhắn tin,... trên Bất Động Sản Alpha`
+        };
+        transporter.sendMail(mailOptions, function (error, info, ){
+            if(error){
+                console.log(error);
+            }
+            else{
+                console.log('Email sent: ', info.response);
+            }
+        });
+    },
+    acceptUser: async (req, res, next) => {
+        const { id } = req.params
+        console.log(id + "hihi");
+        try {
+            const result = await UserSchema.findByIdAndUpdate({ _id: id }, { accept: true }, { new: true })
+            if (!result) {
+                throw createError.NotAcceptable()
+            }
+            return res.status(200).json({
+                result
+            })
+        } catch (error) {
+            next(error)
         }
     },
     deleteUser: async (req, res, next) => {
@@ -46,6 +95,21 @@ module.exports = {
             return res.status(200).json({
                 message: "Delete successfully!",
                 status: 200
+            })
+        } catch (error) {
+            next(error)
+        }
+    },
+    getAccountPending: async (req, res, next) => {
+        try {
+            const result = await UserSchema.find({
+                accept: false
+            })
+            if (!result) {
+                throw createError.NotFound()
+            }
+            res.status(200).json({
+                result
             })
         } catch (error) {
             next(error)
@@ -226,7 +290,7 @@ module.exports = {
         }
     },
 
-    returnPost: async(req, res, next) => {
+    returnPost: async (req, res, next) => {
         const { id } = req.params;
         console.log(id + "return");
         try {
@@ -243,6 +307,29 @@ module.exports = {
             createError.InternalServerError();
         }
 
+    },
+
+    countPostPerMonth: async (req, res, next) => {
+        try {
+            const posts = await Post.find();
+
+            const currentDate = new Date();
+            const currentYear = currentDate.getFullYear();
+            // const currentMonth = currentDate.getMonth() + 1;
+            const data = {}
+            for (let i = 0; i < 12; i++) {
+                const currentMonthPosts = posts.filter(post => {
+                    const postYear = post.createAt.getFullYear()
+                    const postMonth = post.createAt.getMonth();
+                    return postYear === currentYear && postMonth === i;
+                });
+
+                data[`Tháng ${i + 1}`] = currentMonthPosts.length;
+            }
+            return res.status(200).json({ data })
+        } catch (error) {
+            next(error)
+        }
     }
 
 
