@@ -13,7 +13,7 @@ module.exports = {
             const result = await UserSchema.find({
                 role: 'user'
             });
-            console.log(result);
+            // console.log(result);
             if (!result) {
                 createError.NotFound();
             }
@@ -74,11 +74,13 @@ module.exports = {
             const user = await UserSchema.findOne({
                 phoneNumber
             })
-            console.log(user);
+            // console.log(user);
             const fullName = user.fullName
             const image = user.image
             const userID = user._id
             const role = user.role
+            const accept = user.accept
+            console.log(accept);
             if (!user) {
                 throw createError.NotFound(`${phoneNumber} is not registerd`)
             }
@@ -87,6 +89,10 @@ module.exports = {
             const isValid = await user.isCheckPassword(password)
             if (!isValid) {
                 throw createError.Unauthorized('Khong xac thuc')
+            }
+
+            if (accept === false) {
+                throw createError.Unauthorized('Un-Actived')
             }
             const accessToken = await signAccessToken(user._id);
             const refreshToken = await signRefreshToken(user._id);
@@ -101,17 +107,20 @@ module.exports = {
                     }
                 })
             }
-            return res.json({
-                data: {
-                    accessToken,
-                    refreshToken,
-                    fullName,
-                    image,
-                    userID,
-                    role
-                }
+            if (accept === true && isValid) {
+                return res.json({
+                    data: {
+                        accessToken,
+                        refreshToken,
+                        fullName,
+                        image,
+                        userID,
+                        role
+                    }
 
-            })
+                },)
+            }
+
 
         } catch (error) {
             next(error)
@@ -200,10 +209,10 @@ module.exports = {
             // console.log(userID);
 
             const data = await UserSchema.findById(userID)
-            console.log(data);
+            // console.log(data);
             // console.log(req.payload);
             return res.status(200).json({
-                ...data
+                ...data._doc
             })
         } catch (error) {
             next(error)
@@ -235,6 +244,39 @@ module.exports = {
         }
     },
 
-    
+    getContactList: async (req, res, next) => {
+        try {
+            const { id } = req.params;
+            const user = await UserSchema.findOne({ _id: id });
+
+            if (!user) {
+                return createError.NotFound("Không tìm thấy người dùng");
+            }
+
+            const contactList = user.contacts;
+
+            if (!contactList || contactList.length === 0) {
+                return createError.NotFound("Không có danh sách liên hệ");
+            }
+
+            const InforContact = [];
+
+            for (const contact of contactList) {
+                const result = await UserSchema.findOne({ _id: contact });
+                if (result) {
+                    InforContact.push(result);
+                }
+            }
+
+            res.status(200).json({
+                InforContact
+            });
+        } catch (error) {
+            next(error);
+        }
+    }
+
+
+
 
 }

@@ -152,7 +152,7 @@ module.exports = {
             const { code, name, formality, address, acreage, bedrooms, bathrooms,
                 livingRooms, amenities, price, type, description } = req.body;
             const numericValue = price.replace(/[^0-9]/g, '');
-            const existingPost = await Post.findById({_id: id});
+            const existingPost = await Post.findById({ _id: id });
 
             if (!existingPost) {
                 throw createError.NotFound('Post not found.')
@@ -208,13 +208,35 @@ module.exports = {
     search: async (req, res, next) => {
         try {
             const { name } = req.query;
-            // console.log(req.query);
-            const properties = await Post.find({
-                pending: false,
-                $text: { $search: name },
-            })
-            res.json(properties);
-            // console.log(properties);
+            console.log(req.query);
+            if (name.includes('-')) {
+                // Câu truy vấn từ các select
+                // const searchParams = name.split('-');
+                // console.log(searchParams);
+                const properties = await Post.find({
+                    pending: false,
+                    $text: { $search: name }
+                    // formality: searchParams[0],
+                    // type: searchParams[1],
+                    // address: searchParams[2],
+
+                    // address: {
+                    //     $text: { $search: name }
+                    // },
+
+                    // Thêm các điều kiện tìm kiếm khác tùy theo cần thiết
+                });
+                // console.log(properties + 'value');
+                res.json(properties);
+            } else {
+                // Câu truy vấn từ input
+                const properties = await Post.find({
+                    pending: false,
+                    $text: { $search: name },
+                });
+                console.log(properties);
+                res.json(properties);
+            }
         } catch (error) {
             createError.NotFound()
         }
@@ -232,6 +254,34 @@ module.exports = {
         } catch (error) {
             res.json({ message: error.message })
         }
+    },
+
+    countByAddress: async (req, res, next) => {
+        try {
+            const { address } = req.query;
+            if (!address) {
+                return res.status(400).json({ message: 'Missing address parameter' });
+            }
+            const count = await Post.countDocuments({ address: new RegExp(`, ${address}$`) })
+            res.json({ count })
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ message: 'Internal Server Error' });
+        }
+    },
+    getPostByAddress: async (req, res, next) => {
+        const { address } = req.query;
+        console.log(address);
+        try {
+            const result = await Post.find({ address: new RegExp(`, ${address}$`), pending: false })
+            res.json({
+                result
+            })
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ message: 'Internal Server Error' });
+        }
     }
+
 
 }
