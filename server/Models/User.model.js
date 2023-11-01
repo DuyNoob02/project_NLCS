@@ -38,6 +38,14 @@ const UserSchema = new Schema({
     image: {
         type: String,
     },
+    accept: {
+        type: Boolean,
+        default: false
+    },
+    contacts: {
+        type: Array,
+        default: null
+    },
     role: {
         type: String,
         default: 'user'
