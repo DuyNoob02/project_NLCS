@@ -2,6 +2,7 @@ const express = require('express')
 const route = express.Router()
 const AdminController = require('../Controllers/Admin.controller')
 
+
 route.get('/getAllUser', AdminController.fetchAll)
 route.get('/getPostPending', AdminController.getPostPending)
 route.get('/getChartData', AdminController.getPostSevendayAgo)
@@ -18,5 +19,8 @@ route.post('/sendConfirmation', AdminController.sendConfirmationAccount)
 
 route.delete('/deleteUser/:id', AdminController.deleteUser)
 route.delete('/deletePost/:id', AdminController.deletePost)
+
+
+
 
 module.exports = route

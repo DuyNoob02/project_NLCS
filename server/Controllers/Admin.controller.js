@@ -37,21 +37,27 @@ module.exports = {
         }
     },
     sendConfirmationAccount: async (req, res, next) => {
-        const {email, username} = req.body
+        const { email, username } = req.body
         const mailOptions = {
             from: 'nguyenkhachuy25122002@gmail.com',
             to: email,
             subject: 'Kích hoạt tài khoản',
             text: `Chào mừng ${username}, tài khoản của bạn đã được kích hoạt, từ giờ bạn có thể đăng bài viết, nhắn tin,... trên Bất Động Sản Alpha`
         };
-        transporter.sendMail(mailOptions, function (error, info, ){
-            if(error){
-                console.log(error);
+        try {
+            const info = await transporter.sendMail(mailOptions);
+            console.log('Email sent: ', info.response);
+            const responsePart = info.response.split(' ');
+            const status = responsePart[2];
+            console.log(status);
+            // Kiểm tra xem email đã được gửi đi hay chưa
+            if (status === 'OK') {
+                console.log('Email đã được gửi đi.');
+                return res.status(200).end();
             }
-            else{
-                console.log('Email sent: ', info.response);
-            }
-        });
+        } catch (error) {
+            console.error(error);
+        }
     },
     acceptUser: async (req, res, next) => {
         const { id } = req.params
