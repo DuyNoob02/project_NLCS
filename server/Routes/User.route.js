@@ -21,4 +21,6 @@ route.put('/update/:id', UserController.update)
 route.put('/updateAvt/:id', User_uploadCloud.single('image'), UserController.updateAVT)
 
 route.post('/refresh-token', UserController.refreshToken)
+
+
 module.exports = route
