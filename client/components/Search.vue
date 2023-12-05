@@ -119,7 +119,7 @@ const handleSelectChange = () => {
     console.log(selectedTinh.value);
 
     // console.log(index);
-    console.log(selectedHuyen.value);
+    // console.log(selectedHuyen.value);
     let ProvinceName = '';
 
     for (let i = 0; i < tinhs.value.length; i++) {
@@ -137,7 +137,7 @@ const { data: ProvinceData } = await useFetch('https://vapi.vnappmob.com/api/pro
 })
 // console.log(ProvinceData.value.results);
 tinhs.value = ProvinceData.value.results
-console.log(tinhs.value);
+// console.log(tinhs.value);    
 const handleSubmit = async () => {
     console.log(query.value);
     route.push(`/search/${query.value}`)

@@ -32,13 +32,13 @@
                 <button @click="toggleDropdown"
                   class="flex p-1 items-center space-x-2 focus:outline-none  rounded-md font-medium">
                   <span class="text-sm pr-2 border-r-2">{{ userName }}</span>
-                  <svg class="w-4 h-4 hover:bg-slate-200" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                  <!-- <svg class="w-4 h-4 hover:bg-slate-200" fill="none" stroke="currentColor" viewBox="0 0 100% 4"
                     xmlns="http://www.w3.org/2000/svg">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-                  </svg>
+                  </svg> -->
                 </button>
                 <div v-if="dropdownOpen"
-                  class="absolute right-0 mt-2 w-48 bg-white border rounded-lg shadow-lg z-40 invisible">
+                  class="absolute right-0 mt-2 w-48 bg-white border rounded-lg shadow-lg z-40 invisible" v-click-outside="closeDropdown">
                   <ul class="py-2">
                     <li>
                       <NuxtLink :to='`/accountManagement/`' class="block px-4 py-2 text-gray-800 hover:bg-gray-100">
@@ -174,6 +174,7 @@
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { isLoggedIn, login, userName } from '../composables/auth';
+// import vClickOutside from 'v-click-outside';
 import 'flowbite';
 
 
@@ -189,6 +190,7 @@ const logout = async () => {
   localStorage.removeItem('refreshToken')
   localStorage.removeItem('accessToken')
   localStorage.removeItem('userName')
+  localStorage.removeItem('role')
   localStorage.removeItem('userID')
   const response = await useFetch('http://localhost:3001/api/user/logout', {
     method: "DELETE",
@@ -208,6 +210,10 @@ const logout = async () => {
 const selectedLink = (link) => {
   activeLink.value = link
 }
+
+const closeDropdown = () => {
+  dropdownOpen.value = false;
+};
 </script>
 
 <style>

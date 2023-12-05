@@ -19,7 +19,7 @@
                         </swiper-slide>
                     </swiper>
                     <!-- Ghi chú -->
-                    <div class="absolute top-0 left-0 text-sm font-medium text-white mt-2 ml-5 opacity-75 z-10">
+                    <div class="absolute top-0 left-0 text-sm font-medium text-white mt-2 ml-10 opacity-75 z-10">
                         TP. Hồ Chí Minh
                         <p>{{ HCMPost }} tin đăng</p>
                     </div>
@@ -55,7 +55,7 @@
                                 </swiper-slide>
                             </swiper>
                             <!-- Ghi chú -->
-                            <div class="text-sm font-medium absolute top-0 left-0 text-white mt-2 ml-2 opacity-75 z-10">
+                            <div class="text-sm font-medium absolute top-0 left-0 text-white mt-2 ml-5 opacity-75 z-10">
                                 Cần Thơ
                                 <p>{{ CanThoPost }} tin đăng</p>
                             </div>
@@ -74,7 +74,7 @@
                                 </swiper-slide>
                             </swiper>
                             <!-- Ghi chú -->
-                            <div class="absolute text-sm font-medium top-0 left-0 text-white mt-4 ml-4 opacity-75 z-10">
+                            <div class="absolute text-sm font-medium top-0 left-0 text-white mt-2 ml-5 opacity-75 z-10">
                                 Hà Nội
                                 <p>{{ HNPost }} tin đăng</p>
                             </div>
@@ -93,7 +93,7 @@
                                     <img class="" :src='`${image}`' alt="" loading="lazy">
                                 </swiper-slide>
                             </swiper>
-                            <div class="absolute text-sm font-medium top-0 left-0 text-white mt-4 ml-4 opacity-75 z-10">
+                            <div class="absolute text-sm font-medium top-0 left-0 text-white mt-2 ml-5 opacity-75 z-10">
                                 Bình Dương
                                 <p>{{ BDPost }} tin đăng</p>
                             </div>
@@ -110,7 +110,7 @@
 <script setup>
 
 import { Swiper, SwiperSlide } from 'swiper/vue';
-import 'swiper/css';
+import 'swiper/css'
 // import '../assets/style.css';
 import 'swiper/css/navigation';
 import { Autoplay, Navigation } from 'swiper/modules';
@@ -135,27 +135,27 @@ const location = [
 
 
 const { data: getCanThoPost } = await useFetch(`http://localhost:3001/api/item/count/countByAddress?address=Cần Thơ`)
-console.log(getCanThoPost.value.count);
+// console.log(getCanThoPost.value.count);
 const CanThoPost = getCanThoPost.value.count
 
 
 const { data: getHCMPost } = await useFetch(`http://localhost:3001/api/item/count/countByAddress?address=TP.HCM`)
-console.log(getHCMPost.value.count);
+// console.log(getHCMPost.value.count);
 const HCMPost = getHCMPost.value.count
 
 
 const { data: getHNPost } = await useFetch(`http://localhost:3001/api/item/count/countByAddress?address=Hà Nội`)
-console.log(getHNPost.value.count);
+// console.log(getHNPost.value.count);
 const HNPost = getHNPost.value.count
 
 
 const { data: getDNPost } = await useFetch(`http://localhost:3001/api/item/count/countByAddress?address=Đà Nẵng`)
-console.log(getDNPost.value.count);
+// console.log(getDNPost.value.count);
 const DNPost = getDNPost.value.count
 
 
 const { data: getBDPost } = await useFetch(`http://localhost:3001/api/item/count/countByAddress?address=Bình Dương`)
-console.log(getBDPost.value.count);
+// console.log(getBDPost.value.count);
 const BDPost = getBDPost.value.count
 
 
@@ -185,98 +185,19 @@ const BDimg = {
     2: 'https://res.cloudinary.com/dytehhg2f/image/upload/v1698759040/Slide_image/BD-web-2_ohohjt.jpg',
     3: 'https://res.cloudinary.com/dytehhg2f/image/upload/v1698818856/Slide_image/BD_qftuup.jpg'
 }
-// const HCMImg = [
-//     1:
-//     {
-//         img: 'https://res.cloudinary.com/dytehhg2f/image/upload/v1698759042/Slide_image/HCM-web-1_fnnxt1.jpg'
-//     },
-//     {
-//         img: 'https://res.cloudinary.com/dytehhg2f/image/upload/v1698759041/Slide_image/HCM-web-3_sonhwu.jpg'
-//     },
-//     {
-//         img: 'https://res.cloudinary.com/dytehhg2f/image/upload/v1698759041/Slide_image/HCM-web-2_iqlf1t.jpg'
-//     },
-// ]
 
-const locations = [
-    {
-        id: 'hcm',
-        images: [
-            'https://res.cloudinary.com/dytehhg2f/image/upload/v1698759042/Slide_image/HCM-web-1_fnnxt1.jpg',
-            'https://res.cloudinary.com/dytehhg2f/image/upload/v1698759041/Slide_image/HCM-web-3_sonhwu.jpg',
-            'https://res.cloudinary.com/dytehhg2f/image/upload/v1698759041/Slide_image/HCM-web-2_iqlf1t.jpg'
-            // Thêm URL hình ảnh cho TP. Hồ Chí Minh tại đây...
-        ],
-        currentImageIndex: 0
-    },
-    {
-        id: 'HN',
-        images: [
 
-            // Thêm URL hình ảnh cho TP. Hồ Chí Minh tại đây...
-        ],
-        currentImageIndex: 0
-    },
-    {
-        id: 'DN',
-        images: [
-
-            // Thêm URL hình ảnh cho TP. Hồ Chí Minh tại đây...
-        ],
-        currentImageIndex: 0
-    },
-    {
-        id: 'BD',
-        images: [
-
-            // 'https://res.cloudinary.com/dytehhg2f/image/upload/v1698759041/Slide_image/HCM-web-2_iqlf1t.jpg'
-            // Thêm URL hình ảnh cho TP. Hồ Chí Minh tại đây...
-        ],
-        currentImageIndex: 0
-    },
-    {
-        id: 'CT',
-        images: [
-
-            // Thêm URL hình ảnh cho TP. Hồ Chí Minh tại đây...
-        ],
-        currentImageIndex: 0
-    }
-    // Thêm các địa điểm khác vào danh sách locations...
-];
-
-// const currentLocation = ref(locations[0].id);
-
-// const currentImageUrl = computed(() => {
-//     const location = locations.find(loc => loc.id === currentLocation.value);
-//     return location ? location.images[currentImageIndex.value] : null;
-// });
-
-// const changeImage = (locationId) => {
-//     setInterval(() => {
-//         const location = locations.find(loc => loc.id === locationId);
-//         if (location) {
-//             location.currentImageIndex = (location.currentImageIndex + 1) % location.images.length;
-//         }
-//     }, 3000);
-// };
-
-// onMounted(() => {
-//     locations.forEach(location => {
-//         changeImage(location.id);
-//     });
-// });
 
 </script>
 
 <style  scoped>
 .swp-img {
-    width: 530px;
-    height: 358px;
+    width: 640px;
+    height: 388px;
 }
 
 .small-swp {
-    width: 270px;
-    height: 175px;
+    width: 340px;
+    height: 190px;
 }
 </style>

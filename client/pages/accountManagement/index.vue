@@ -24,19 +24,21 @@
                             <span>Loading...</span>
                         </div>
                         <img v-if="isAVT"
-                            class="col-span-1 cursor-pointer avatar mb-4 w-60 h-40 bg-cover object-cover rounded-full"
+                            class="col-span-1 cursor-pointer avatar mb-4 w-60 h-auto bg-cover object-cover rounded-full"
                             :src="`${userInfo.image}`" alt="">
 
                         <img v-else class="col-span-1 cursor-pointer avatar mb-4" :src="avatarSrc" alt="">
-                        <input type="file" @change="handleFileChange" accept="image/*" name="image" class="rounded-sm" />
+                        <input  type="file" @change="handleFileChange" accept="image/*" name="image" class="rounded-sm bg-black w-28" />
+                        <!-- <input class="bg-black w-28 rounded-e-sm" type="file" ref="fileInput" @change="handleFileChange"
+                            accept="image/*" name="images" multiple> -->
                         <button v-if="isUpdateAVT" @click="uploadAvatar"
-                            class="bg-green-400 rounded-md mt-3 px-3 py-2 text-white hover:bg-green-600">Cập nhật</button>
+                            class="bg-green-400 rounded-md mt-3 px-3 py-2 ml-3 text-white hover:bg-green-600">Cập nhật</button>
                     </label>
 
 
                     <div class="col-span-5 ml-5">
                         <p class="font-bold text-sm">{{ fullName }}</p>
-                        <NuxtLink class="cursor-pointer" :to='`/profile/${id}`'>Xem trang ca nhan</NuxtLink>
+                        <NuxtLink class="cursor-pointer" :to='`/profile/${id}`'>Xem trang cá nhân</NuxtLink>
                     </div>
                 </div>
                 <form class="mt-10 grid grid-cols-6" action="">

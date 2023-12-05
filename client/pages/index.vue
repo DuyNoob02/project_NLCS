@@ -115,7 +115,7 @@
         </div>
     </div>
     <CountPost/>
-
+    <BusinessInfo/>
     <div class="mb-20"></div>
 </template>
 
