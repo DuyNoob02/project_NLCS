@@ -2,9 +2,12 @@ const express = require('express')
 
 const app = express()
 const createError = require('http-errors')
+
 const Post = require('./Routes/Post.route')
 const UserRouter = require('./Routes/User.route')
 const AdminRouter = require('./Routes/Admin.route')
+const Business = require('./Routes/Business.route')
+
 const Message = require('./Models/Message.model')
 const UserSchema = require('./Models/User.model')
 const cors = require('cors')
@@ -45,6 +48,7 @@ app.use(cors())
 app.use('/api/item', Post);
 app.use('/api/user', UserRouter);
 app.use('/api/admin', AdminRouter)
+app.use('/api/business', Business)
 app.use('/uploads', express.static("uploads"));
 app.options('*', cors())
 app.use((req, res, next) => {

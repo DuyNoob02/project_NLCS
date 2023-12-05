@@ -148,7 +148,7 @@ module.exports = {
     updatePost: async (req, res, next) => {
         try {
             const { id } = req.params;
-            console.log(req.params);
+            // console.log(req.params);
             const { code, name, formality, address, acreage, bedrooms, bathrooms,
                 livingRooms, amenities, price, type, description } = req.body;
             const numericValue = price.replace(/[^0-9]/g, '');
@@ -158,13 +158,15 @@ module.exports = {
                 throw createError.NotFound('Post not found.')
             }
             const oldImages = existingPost.images
+            console.log(req.body.images);
             const newImages = req.files ? req.files.map(file => file.path) : [];
+            // console.log(req.files);
             const imagesToUpdate = newImages.length > 0 ? newImages : oldImages;
-
+            // const imagesToUpdate = newImages;
             const updatedPost = await Post.findByIdAndUpdate({ _id: id }, {
-                code: code, name: name, formality: formality, address: address, acreage: acreage, bedrooms: bedrooms, bathrooms,
-                price: numericValue, type: type, livingRooms, amenities, description: description, images: imagesToUpdate
-            }, { new: true })
+                code,name, formality, address,acreage,bedrooms, bathrooms,
+                price: numericValue,type, livingRooms, amenities,description, images: imagesToUpdate
+            })
             if (!updatedPost) {
                 throw createError.NotFound(`Post with ID ${id} not found`);
             }

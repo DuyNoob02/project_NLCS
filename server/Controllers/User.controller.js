@@ -26,12 +26,13 @@ module.exports = {
     },
 
     register: async (req, res, next) => {
-        console.log(req.body);
+        // console.log(req.body);
         try {
             const { fullName, phoneNumber, password, role, email } = req.body;
             const { error } = userValidate(req.body); //verify information
             if (error) {
-                throw createError(error.details[0].message);
+                console.log(error.details[0].message);
+                // throw createError(error.details[0].message);
             }
             const isExists = await UserSchema.findOne({
                 phoneNumber
@@ -57,8 +58,12 @@ module.exports = {
                 elements: savedUser
             })
         } catch (error) {
-            console.log(error);
-            next(error)
+            console.log(error.message);
+            res.status(500).json({
+                status: error,
+                message: error.message
+            })
+            // next(error)
         }
     },
 
