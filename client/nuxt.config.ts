@@ -19,7 +19,8 @@ export default defineNuxtConfig({
   //   {  mode: 'client' }
   //   // '~/plugins/socket.io.js'
   // ],
-    
+  
+  modules: ['@nuxt/ui'],
   postcss: {
     plugins: {
       tailwindcss: {},
