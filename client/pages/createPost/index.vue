@@ -143,15 +143,15 @@
         <!-- <div class="col-span-1"></div> -->
 
     </div>
-    <div v-if="isLoading"
+    <!-- <div v-if="isLoading"
         class="h-screen bg-slate-200 fixed top-0 left-0 right-0 bottom-0 z-10 flex items-center justify-center flex-col">
-        <div class="m-12 inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-current border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]"
+        <div class="m-12 inline-block h-8 w-8 anima te-spin rounded-full border-4 border-solid border-current border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]"
             role="status">
 
         </div>
         <span>Loading...</span>
 
-    </div>
+    </div> -->
 </template>
 
 <script setup>
@@ -269,7 +269,18 @@ watch(selectedOption, (newValue) => {
 //     }
 
 // }
+const isNameProject = ref(true)
+const isAddress = ref(true)
+const isPrice = ref(true)
+
 const handleSubmit = async () => {
+    isNameProject.value = name.value.trim() !== '';
+    isAddress.value = address.value.trim() !== '';
+    isPrice.value = address.value.trim() !== ''
+    if(!isNameProject.value || !isAddress.value || !isPrice.value){
+        alert("Vui lòng điền đầy đủ thông tin")
+        location.reload()
+    }
     isLoading.value = true;
     const formData = new FormData();
     formData.append('name', name.value);
@@ -282,25 +293,25 @@ const handleSubmit = async () => {
     // console.log(formattedPrice);
     formData.append('price', price.value);
     formData.append('description', description.value);
-    formData.append('createAt', createAt)
-    console.log(description);
+    formData.append('createAt', createAt);
+    // console.log(description);
     // Thêm các trường dữ liệu vào formData
-    console.log('this is img', images.value.length);
+    // console.log('this is img', images.value.length);
     [...images.value].forEach((item) => {
-        console.log("1");
+        // console.log("1");
         formData.append('images', item)
     })
 
     for (const pair of formData.entries()) {
         const [key, value] = pair;
-        console.log(`Key: ${key}, Value: ${value}`);
+        // console.log(`Key: ${key}, Value: ${value}`);
     }
-    console.log(formData);
+    // console.log(formData);
     try {
         // const newAccessToken = await getAccessToken();
         // console.log(newAccessToken);
         const accessToken = localStorage.getItem('accessToken')
-        console.log(accessToken);
+        // console.log(accessToken);
         const response = await useFetch('http://localhost:3001/api/item/post/', {
             method: 'POST',
             headers: {
@@ -311,10 +322,15 @@ const handleSubmit = async () => {
             body: formData,
 
         });
-        if (response.status === 'ok') {
+        console.log(response.error._object.SeA37f7DdC.data.message);
+        if (response.error._object.SeA37f7DdC.data.message) {
+            alert("Mã dự án đã tồn tại!")
+            location.reload()
+        }
+        else if (response.status === 'ok') {
             isLoading.value = false
         }
-        console.log(response.data);
+        // console.log(response.data);
         router.push('/');
     } catch (error) {
         console.log(error);

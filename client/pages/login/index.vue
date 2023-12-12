@@ -62,7 +62,7 @@ const handleSubmit = async () => {
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: formData
+            body: JSON.stringify(formData) 
         })
         console.log(">>> in ra role", response.data.value.message);
         if (response.data.value.status == '401' && response.data.value.message === 'Un-Actived') {

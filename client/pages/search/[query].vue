@@ -51,12 +51,12 @@ const route = useRoute()
 const searchQuery = route.params.query || ''
 const Querysplt = searchQuery.split("-")
 const stdQuery = Querysplt.join(" ")
-// console.log(stdQuery)
-console.log("🚀 ~ file: [query].vue:54 ~ console.log(stdQuery):", console.log(stdQuery))
+console.log(stdQuery)
+// console.log("🚀 ~ file: [query].vue:54 ~ console.log(stdQuery):", console.log(stdQuery))
 // console.log(searchQuery + 'query');
 // const selectedOption = route.query.option
 const searchResult = ref([])
-const { data: handleSearch } = await useFetch(`http://localhost:3001/api/item/search/query?name=${searchQuery}`, {
+const { data: handleSearch } = await useFetch(`http://localhost:3001/api/item/search/query?name=${stdQuery}`, {
     method: 'GET'
 })
 // console.log(handleSearch.value);

@@ -31,15 +31,26 @@ module.exports = {
             const { fullName, phoneNumber, password, role, email } = req.body;
             const { error } = userValidate(req.body); //verify information
             if (error) {
-                console.log(error.details[0].message);
+                console.log("Loi dau tien", error.details[0].message);
                 // throw createError(error.details[0].message);
             }
-            const isExists = await UserSchema.findOne({
-                phoneNumber
-            });
-            if (isExists) {
-                createError.Conflict(`${phoneNumber} is ready been registered`)
+            try {
+                const isExists = await UserSchema.findOne({
+                    phoneNumber
+                });
+                if (isExists) {
+                    console.log("Dung do");
+                    return res.status(409).json({
+                        status: "conflict",
+                        message: "conflict"
+                    })
+                }
+            } catch (error) {
+                return res.json({
+                    message: error.code
+                })
             }
+
 
             //create new user
             const user = new UserSchema({
@@ -58,10 +69,10 @@ module.exports = {
                 elements: savedUser
             })
         } catch (error) {
-            console.log(error.message);
+            console.log("Loi thu 2", error.code);
             res.status(500).json({
                 status: error,
-                message: error.message
+                message: error.code
             })
             // next(error)
         }
@@ -80,12 +91,7 @@ module.exports = {
                 phoneNumber
             })
             // console.log(user);
-            const fullName = user.fullName
-            const image = user.image
-            const userID = user._id
-            const role = user.role
-            const accept = user.accept
-            console.log(accept);
+            
             if (!user) {
                 throw createError.NotFound(`${phoneNumber} is not registerd`)
             }
@@ -95,10 +101,18 @@ module.exports = {
             if (!isValid) {
                 throw createError.Unauthorized('Khong xac thuc')
             }
-
+            const accept = user.accept
             if (accept === false) {
                 throw createError.Unauthorized('Un-Actived')
             }
+
+            const fullName = user.fullName
+            const image = user.image
+            const userID = user._id
+            const role = user.role
+            
+            console.log(accept);
+
             const accessToken = await signAccessToken(user._id);
             const refreshToken = await signRefreshToken(user._id);
             if (role == 'admin') {

@@ -61,7 +61,7 @@ module.exports = {
     },
     acceptUser: async (req, res, next) => {
         const { id } = req.params
-        console.log(id + "hihi");
+        // console.log(id + "hihi");
         try {
             const result = await UserSchema.findByIdAndUpdate({ _id: id }, { accept: true }, { new: true })
             if (!result) {

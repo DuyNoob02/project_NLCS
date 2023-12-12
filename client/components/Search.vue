@@ -131,7 +131,7 @@ const handleSelectChange = () => {
     }
     query.value = `${selectedFormality.value}-${selectedType.value}-${ProvinceName}-${selectedHuyen.value}`
 }
-console.log(query.value);
+// console.log(query.value);
 const { data: ProvinceData } = await useFetch('https://vapi.vnappmob.com/api/province', {
     method: 'GET'
 })
@@ -139,8 +139,14 @@ const { data: ProvinceData } = await useFetch('https://vapi.vnappmob.com/api/pro
 tinhs.value = ProvinceData.value.results
 // console.log(tinhs.value);    
 const handleSubmit = async () => {
-    console.log(query.value);
-    route.push(`/search/${query.value}`)
+    // console.log(query.value);
+    if(!query.value){
+        alert("Cần nhập thông tin tìm kiếm!")
+    }
+    else{
+
+        route.push(`/search/${query.value}`)
+    }
     // if (searchQuery.value === '') {
     //     if(selectedOption.value === 'Bán'){
     //         route.push('/search/sell')

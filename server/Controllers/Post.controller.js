@@ -77,8 +77,11 @@ module.exports = {
             })
             //xu ly loi da tong tai item
             if (isExists) {
-                // console.log("da ton tai");
-                throw createError.Conflict(`${code} is ready been created`);
+                console.log("da ton tai");
+                // throw createError.Conflict(`${code} is ready been created`);
+                return res.status(409).json({
+                    message: "conflict"
+                })
             }
 
             // Xử lý nếu muốn thêm các trường khác trong yêu cầu POST.
@@ -164,8 +167,8 @@ module.exports = {
             const imagesToUpdate = newImages.length > 0 ? newImages : oldImages;
             // const imagesToUpdate = newImages;
             const updatedPost = await Post.findByIdAndUpdate({ _id: id }, {
-                code,name, formality, address,acreage,bedrooms, bathrooms,
-                price: numericValue,type, livingRooms, amenities,description, images: imagesToUpdate
+                code, name, formality, address, acreage, bedrooms, bathrooms,
+                price: numericValue, type, livingRooms, amenities, description, images: imagesToUpdate
             })
             if (!updatedPost) {
                 throw createError.NotFound(`Post with ID ${id} not found`);
@@ -211,34 +214,40 @@ module.exports = {
         try {
             const { name } = req.query;
             console.log(req.query);
-            if (name.includes('-')) {
-                // Câu truy vấn từ các select
-                // const searchParams = name.split('-');
-                // console.log(searchParams);
-                const properties = await Post.find({
-                    pending: false,
-                    $text: { $search: name }
-                    // formality: searchParams[0],
-                    // type: searchParams[1],
-                    // address: searchParams[2],
+            // if (name.includes('-')) {
+            //     // Câu truy vấn từ các select
+            //     // const searchParams = name.split('-');
+            //     // console.log(searchParams);
+            //     const properties = await Post.find({
+            //         pending: false,
+            //         $text: { $search: name }
+            //         // formality: searchParams[0],
+            //         // type: searchParams[1],
+            //         // address: searchParams[2],
 
-                    // address: {
-                    //     $text: { $search: name }
-                    // },
+            //         // address: {
+            //         //     $text: { $search: name }
+            //         // },
 
-                    // Thêm các điều kiện tìm kiếm khác tùy theo cần thiết
-                });
-                // console.log(properties + 'value');
-                res.json(properties);
-            } else {
-                // Câu truy vấn từ input
-                const properties = await Post.find({
-                    pending: false,
-                    $text: { $search: name },
-                });
-                console.log(properties);
-                res.json(properties);
-            }
+            //         // Thêm các điều kiện tìm kiếm khác tùy theo cần thiết
+            //     });
+            //     // console.log(properties + 'value');
+            //     res.json(properties);
+            // } else {
+            //     // Câu truy vấn từ input
+            //     const properties = await Post.find({
+            //         pending: false,
+            //         $text: { $search: name },
+            //     });
+            //     console.log(properties);
+            //     res.json(properties);
+            // }
+            const properties = await Post.find({
+                pending: false,
+                $text: { $search: name },
+            });
+            console.log(properties);
+            res.json(properties);
         } catch (error) {
             createError.NotFound()
         }
@@ -264,7 +273,7 @@ module.exports = {
             if (!address) {
                 return res.status(400).json({ message: 'Missing address parameter' });
             }
-            const count = await Post.countDocuments({ address: new RegExp(`, ${address}$`) })
+            const count = await Post.countDocuments({ address: new RegExp(`, ${address}$`), pending: false, forDelete:false })
             res.json({ count })
         } catch (error) {
             console.error(error);
