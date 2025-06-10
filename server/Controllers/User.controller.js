@@ -32,7 +32,7 @@ module.exports = {
             const { error } = userValidate(req.body); //verify information
             if (error) {
                 console.log("Loi dau tien", error.details[0].message);
-                // throw createError(error.details[0].message);
+                throw createError(error.details[0].message);
             }
             try {
                 const isExists = await UserSchema.findOne({
@@ -40,9 +40,10 @@ module.exports = {
                 });
                 if (isExists) {
                     console.log("Dung do");
-                    return res.status(409).json({
+                    return res.json({
                         status: "conflict",
-                        message: "conflict"
+                        message: "conflict",
+                        statusCode: 409
                     })
                 }
             } catch (error) {
@@ -66,10 +67,11 @@ module.exports = {
 
             return res.json({
                 status: 'ok',
-                elements: savedUser
+                elements: savedUser,
+                statusCode: 200
             })
         } catch (error) {
-            console.log("Loi thu 2", error.code);
+            console.log(error);
             res.status(500).json({
                 status: error,
                 message: error.code
@@ -80,7 +82,7 @@ module.exports = {
 
     login: async (req, res, next) => {
         try {
-
+            console.log("Chạy tới đăng nhập");
             const { error } = userValidateLogin(req.body);
             if (error) {
                 throw createError(error.details[0].message);
@@ -114,6 +116,7 @@ module.exports = {
             console.log(accept);
 
             const accessToken = await signAccessToken(user._id);
+            console.log(accessToken);
             const refreshToken = await signRefreshToken(user._id);
             if (role == 'admin') {
                 return res.json({
