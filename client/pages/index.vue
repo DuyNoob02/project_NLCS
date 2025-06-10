@@ -10,7 +10,7 @@
     <!-- <Search/> -->
     <!-- <SlideShow class="mt-40" /> -->
     <div class="relative">
-        <img src="/slides/3.jpg" alt="" class="w-full h-auto" />
+        <img src="../public/slides/3.jpg" alt="" class="w-full h-auto" />
         <div class="absolute inset-0 justify-center bg-black bg-opacity-50 mt-40">
             <!-- Nội dung của phần tìm kiếm -->
             <Search />

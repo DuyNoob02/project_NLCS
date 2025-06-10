@@ -2,7 +2,7 @@
     <div class="grid grid-cols-4 mt-20">
         <img src="/getty_908748508_381147.jpg" class="absolute" alt="">
         <div class=" col-span-2 border max-w-md rounded-lg relative mt-40 ml-64">
-            <form class="space-y-4 md:space-y-6 py-3 px-3" action="#">
+            <form class="space-y-4 md:space-y-6 py-3 px-3" action="#" @submit.prevent="handleSubmit">
                 <h2 class="font-medium text-2xl border-b-2 border-slate-50 text-slate-50 pb-2">Welcome to Alpha</h2>
                 <div>
                     <label for="phone" class="block mb-2 text-sm font-medium text-slate-50 dark:text-white">
@@ -26,7 +26,7 @@
                     class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center mr-3 md:mr-0 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                     Đăng nhập
                 </button> -->
-                <button type="submit" @click="handleSubmit"
+                <button type="submit"
                     class="w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">Sign
                     in</button>
                 <p class="text-sm font-light text-slate-50 dark:text-gray-400">

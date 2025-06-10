@@ -77,7 +77,10 @@
                         <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
                             {{ userInfo.phoneNumber }}
                         </button>
-                        <button @click="openChatBox()" class="ml-2 text-2xl mt-3 ">
+                        <button @click="openChatBox()" 
+                        class="ml-2 text-2xl mt-3 " 
+                        :disabled="!senderId" :class="{ 'opacity-50 cursor-not-allowed': !senderId}"
+                        :title="!senderId ? 'Vui lòng đăng nhập để thực hiện chức năng này!' : ''">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                                 stroke="currentColor" class="w-10 h-10  text-cyan-500 ">
                                 <path stroke-linecap="round" stroke-linejoin="round"

@@ -116,13 +116,13 @@ const handleSubmit = async () => {
             },
             body: formData
         })
-        console.log(response.error._object.PNLeodVmJg.data.status);
-        if(response.error._object.PNLeodVmJg.data.status === 'conflict'){
+        console.log(response);
+        if(response.data._value.statusCode === 409){
             alert("Số điện thoại đã được đăng ký")
-            location.reload()
+            // location.reload()
         }
         // isSuccess.value = response.status.value === 'success';
-        if (response.status.value === 'success') {
+        else if (response.data._value.statusCode === 200) {
             alert("Tài khoản được tạo thành công!.\nĐang chờ duyệt!")
             router.push('/')
         }
