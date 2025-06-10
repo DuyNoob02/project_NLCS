@@ -70,8 +70,8 @@
                     <!-- <label for="tinh">Chon tinh</label> -->
                     <select v-model="selectedTinh" @change="updateHuyens" class="rounded-md text-sm">
                         <option value="" disabled selected>Chọn Tỉnh Thành</option>
-                        <option v-for="(tinh, index) in tinhs" :key="index" :value="tinh.province_id">
-                            {{ tinh.province_name }}
+                        <option v-for="(tinh, index) in tinhs" :key="index" :value="tinh.code">
+                            {{ tinh.name }}
                         </option>
                     </select>
                 </div>
@@ -79,8 +79,8 @@
                     <!-- <label for="huyen">Chọn quận/huyện:</label> -->
                     <select v-model="selectedHuyen" class="rounded-md text-sm">
                         <option value="" disabled selected>Chọn Quận Huyện</option>
-                        <option v-for="(huyen, index) in huyens" :key="index" :value="huyen.district_name">
-                            {{ huyen.district_name }}
+                        <option v-for="(huyen, index) in huyens" :key="index" :value="huyen.name">
+                            {{ huyen.name }}
                         </option>
                     </select>
                 </div>
@@ -93,86 +93,56 @@
 
 <script setup>
 import { ref } from 'vue';
-const route = useRouter()
-const searchQuery = ref('')
-const selectedFormality = ref('')
-const selectedType = ref('')
+const route = useRouter();
+
+const searchQuery = ref('');
+const selectedFormality = ref('');
+const selectedType = ref('');
 const selectedTinh = ref('');
 const selectedHuyen = ref('');
 const tinhs = ref([]);
 const huyens = ref([]);
-const query = ref('')
+const query = ref('');
 
-// const dropdownSearch = ref(false);
-// const selectedOption = ref('Bán')
-// const selectOption = (type) => {
-//     selectedOption.value = type
-//     dropdownSearch.value = false
-// }
 const handleInputChange = () => {
-    query.value = searchQuery.value
-}
-// const selectQuery = `${selectedFormality.value}-${selectedType.value}-${selectedTinh.value}-${selectedHuyen.value}`
-const handleSelectChange = () => {
-    console.log(selectedFormality.value);
-    console.log(selectedType.value);
-    console.log(selectedTinh.value);
+    query.value = searchQuery.value;
+};
 
-    // console.log(index);
-    // console.log(selectedHuyen.value);
+const handleSelectChange = () => {
     let ProvinceName = '';
+    let HuyenName = selectedHuyen.value;
 
     for (let i = 0; i < tinhs.value.length; i++) {
         const tinh = tinhs.value[i];
-        if (selectedTinh.value === tinh.province_id) {
-            ProvinceName = tinh.province_name;
-            break; // Khi tìm thấy, dừng vòng lặp
+        if (selectedTinh.value == tinh.code) {
+            ProvinceName = tinh.name;
+            break;
         }
     }
-    query.value = `${selectedFormality.value}-${selectedType.value}-${ProvinceName}-${selectedHuyen.value}`
-}
-// console.log(query.value);
-const { data: ProvinceData } = await useFetch('https://vapi.vnappmob.com/api/province', {
-    method: 'GET'
-})
-// console.log(ProvinceData.value.results);
-tinhs.value = ProvinceData.value.results
-// console.log(tinhs.value);    
+
+    query.value = `${selectedFormality.value}-${selectedType.value}-${ProvinceName}-${HuyenName}`;
+};
+
 const handleSubmit = async () => {
-    // console.log(query.value);
-    if(!query.value){
-        alert("Cần nhập thông tin tìm kiếm!")
+    if (!query.value) {
+        alert("Cần nhập thông tin tìm kiếm!");
+    } else {
+        route.push(`/search/${query.value}`);
     }
-    else{
+};
 
-        route.push(`/search/${query.value}`)
-    }
-    // if (searchQuery.value === '') {
-    //     if(selectedOption.value === 'Bán'){
-    //         route.push('/search/sell')
-    //     }
-    //     else if(selectedOption.value === 'Cho thuê'){
-    //         route.push('/search/rent')
-    //     }
-    //     // alert('Nội dung tìm kiếm rỗng')
-    //     // return;
-    // }
-    // else{
-    //     route.push(`/search/${searchQuery.value}?option=${selectedOption.value}`)
-    // }
-}
+const updateHuyens = () => {
+    const selectedProvince = tinhs.value.find(tinh => tinh.code == selectedTinh.value);
+    huyens.value = selectedProvince?.districts || [];
+};
 
-// const toggleDropdownSearch = () => {
-//     dropdownSearch.value = !dropdownSearch.value
-// }
+// 🔄 Gọi API mới để lấy tỉnh + quận/huyện (depth=2)
+const { data: ProvinceData } = await useFetch('https://provinces.open-api.vn/api/?depth=2', {
+    method: 'GET'
+});
 
-
-const updateHuyens = async () => {
-    const { data: DictrictData } = await useFetch(`https://vapi.vnappmob.com/api/province/district/${selectedTinh.value}`, {
-        method: 'GET'
-    })
-    huyens.value = DictrictData.value.results
-}
+tinhs.value = ProvinceData.value;
 </script>
+
 
 <style lang="scss" scoped></style>

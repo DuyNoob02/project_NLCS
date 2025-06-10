@@ -32,10 +32,7 @@
                 <button @click="toggleDropdown"
                   class="flex p-1 items-center space-x-2 focus:outline-none  rounded-md font-medium">
                   <span class="text-sm pr-2 border-r-2">{{ userName }}</span>
-                  <!-- <svg class="w-4 h-4 hover:bg-slate-200" fill="none" stroke="currentColor" viewBox="0 0 100% 4"
-                    xmlns="http://www.w3.org/2000/svg">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-                  </svg> -->
+                
                 </button>
                 <div v-if="dropdownOpen"
                   class="absolute right-0 mt-2 w-48 bg-white border rounded-lg shadow-lg z-40 invisible" v-click-outside="closeDropdown">
@@ -59,26 +56,12 @@
                 </div>
               </div>
             </div>
-            <!-- <NuxtLink to="/createPost" type="button"
-            class=" col-span-1 inline-block  ml-2 bg-transparent hover:bg-green-500 text-green-400 font-semibold hover:text-white py-2 px-4 border border-green-500 hover:border-transparent rounded-lg  ">
-            Đăng bài
-          </NuxtLink> -->
             <NuxtLink to="/createPost" type="button" @click="selectedLink('')"
               class="max-w-max py-1 px-2 ml-3 bg-transparent hover:bg-green-500 text-green-400 font-semibold hover:text-white border border-green-500 hover:border-transparent rounded-lg">
               Đăng bài
             </NuxtLink>
 
           </div>
-
-          <!-- <button data-collapse-toggle="navbar-sticky" type="button"
-          class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
-          aria-controls="navbar-sticky" aria-expanded="false">
-          <span class="sr-only">Open main menu</span>
-          <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 17 14">
-            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-              d="M1 1h15M1 7h15M1 13h15" />
-          </svg>
-        </button> -->
         </div>
         <div class="flex gap-5  items-center">
           <div class="items-center justify-between hidden w-full md:flex md:w-auto md:order-1" id="navbar-sticky">
@@ -116,57 +99,6 @@
 
       </div>
     </nav>
-    <!-- <div class="flex justify-center items-center mt-40 border-b-2 pb-4  ">
-      <form class="mx-96 w-full ">
-        <div class="flex relative">
-          <label for="search-dropdown" class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Your
-            Email</label>
-          <button id="dropdown-button" data-dropdown-toggle="dropdown" @click="toggleDropdownSearch"
-            class="relative w-28 flex-shrink-0 z-10 inline-flex justify-center  items-center py-2.5 px-4 text-sm font-medium text-center text-gray-900 bg-gray-100 border border-gray-300 rounded-l-lg hover:bg-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:focus:ring-gray-700 dark:text-white dark:border-gray-600"
-            type="button">
-            {{ selectedOption }}
-            <svg class="w-2.5 h-2.5 ml-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
-              viewBox="0 0 10 6">
-              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                d="m1 1 4 4 4-4" />
-            </svg>
-          </button>
-          <div id="dropdown" v-if="dropdownSearch"
-            class="absolute  z-10  top-10 bg-slate-300  divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 invisible">
-            <ul class="py-2 text-sm text-gray-700 dark:text-gray-200 absolute " aria-labelledby="dropdown-button">
-              <li>
-                <button type="button" @click="selectOption('Tất cả')"
-                  class="inline-flex w-full px-3 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Tất
-                  cả</button>
-              </li>
-              <li>
-                <button type="button" @click="selectOption('Bán')"
-                  class="inline-flex w-full px-3 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Bán</button>
-              </li>
-              <li>
-                <button type="button" @click="selectOption('Cho thuê')"
-                  class="inline-flex w-full px-3 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Cho
-                  thuê</button>
-              </li>
-
-            </ul>
-          </div>
-          <div class="relative w-full">
-            <input type="search" id="search-dropdown" v-model="searchQuery"
-              class="block p-2.5 w-full z-20 text-sm text-gray-900 bg-gray-50 rounded-r-lg border-l-gray-50 border-l-2 border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-l-gray-700  dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:border-blue-500"
-              placeholder="Chung cư, Nhà ở, Đất nền..." required>
-            <button type="button" @click="handleSubmit"
-              class="absolute top-0 right-0 p-3 px-5 text-sm font-medium h-full text-white bg-blue-700 rounded-r-lg border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-              <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
-                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                  d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
-              </svg>
-              <span class="sr-only">Search</span>
-            </button>
-          </div>
-        </div>
-      </form>
-    </div> -->
   </div>
 </template>
 
